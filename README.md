@@ -182,6 +182,7 @@ The number of slices in the orange are controlled by param 2 (which is used to c
 By using 𝜃 and 𝜙, we can get every vertex position by rotating a vector about the origin. 
 
 > Note: You may find the following useful in your implementation: `glm::radians()`, `glm::sin()`, and `glm::cos()`
+
 > Note: Everything is in radians!
 
 📝 **Task 3.1.1**
