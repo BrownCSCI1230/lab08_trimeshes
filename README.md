@@ -2,16 +2,6 @@
 
 [GitHub Classroom assignment](https://google.com)
 
-𝜃
-
-<details>
-  <summary>Test</summary> 
-	$(r, \theta)$ blah blah blah $(r, \theta, \phi)$
-	test : 𝜃
-</details>
-
-$(r, \theta)$ blah blah blah $(r, \theta, \phi)$
-
 ## 0. Intro
 
 One of the fundamental applications of computer graphics is to display three-dimensional scenes. The catch, however, is that screens can only display two-dimensional images. Therefore, there needs to be some way to convert a three-dimensional scene to something that can be viewed in two dimensions. A common method, which we will use in this lab, is to compose a scene using only triangles, then project those triangles to the screen, drawing each one sequentially.
@@ -156,7 +146,7 @@ Your Cube should now look like this:
 
 Yay! Congratulations on making your Cube! 🙌 It’s to time to make a Sphere 🥳🎉 This is a wee bit more complicated, but don’t worry we’ll walk you through it!
 
-The shape parameters for Sphere are slightly different than Cube. The first parameter controls the number of ‘layers’ in the vertical direction, and the second parameter controls the number of ‘layers’ in the horizontal direction, as shown below. You can also think about this in terms of latitude and longitude -- param 1 controls latitude, and param 2 controls longitude. In term of spherical coordinates, parameter 1 controls $\phi$ and parameter 2 controls $\theta$.
+The shape parameters for Sphere are slightly different than Cube. The first parameter controls the number of ‘layers’ in the vertical direction, and the second parameter controls the number of ‘layers’ in the horizontal direction, as shown below. You can also think about this in terms of latitude and longitude -- param 1 controls latitude, and param 2 controls longitude. In term of spherical coordinates, parameter 1 controls 𝜙 and parameter 2 controls 𝜃.
 
 <details>
   <summary>How Parameters 1 and 2 Affects Sphere Diagram</summary>
@@ -167,7 +157,7 @@ The shape parameters for Sphere are slightly different than Cube. The first para
   <summary>Spherical Coordinates Diagram</summary>
 
 
-Remember polar coordinates $(r, \theta)$ from high school geometry? Spherical coordinates $(r, \theta, \phi)$ are like polar coordinates, but in 3D! Read this [Wikipedia article on the Spherical Coordinate System](https://en.wikipedia.org/wiki/Spherical_coordinate_system) if you need a refresher!
+Remember polar coordinates (*r*, 𝜃) from high school geometry? Spherical coordinates (*r*, 𝜃, 𝜙) are like polar coordinates, but in 3D! Read this [Wikipedia article on the Spherical Coordinate System](https://en.wikipedia.org/wiki/Spherical_coordinate_system) if you need a refresher!
 
 </details>
 
@@ -179,12 +169,12 @@ Let’s start by thinking of the sphere as an orange. Oranges are made up of sli
 
 <details>
   <summary>How does thinking of orange slices relate to this?</summary>
-  The number of slices in the orange are controlled by param 2 (which is used to calculate $\theta$). The 
-  number of segments are controlled by param 1 (which is used to calculate $\phi$). Using both these 
+  The number of slices in the orange are controlled by param 2 (which is used to calculate 𝜃). The 
+  number of segments are controlled by param 1 (which is used to calculate 𝜙). Using both these 
   parameters, we can determine the exact 3D location of each vertex!
 </details>
 
-By using $\theta$ and $\phi$, we can get every vertex position by rotating a vector about the origin. 
+By using 𝜃 and 𝜙, we can get every vertex position by rotating a vector about the origin. 
 
 > Note: You may find the following useful in your implementation: `glm::radians()`, `glm::sin()`, and `glm::cos()`
 > Note: Everything is in radians!
@@ -195,29 +185,29 @@ Copy your `makeTile()` function from your Cube class into the Sphere class. You 
 
 📝 **Task 3.1.2**
 
-In the Sphere class, implement a slice of the Sphere in the `make_slice()` function stub. Use your `makeTile()` function that you copied over. This is the most difficult task, so we have provided a few hints below if you get stuck. Try thinking about how you may calculate $\phi$ and how you may use that to generate a slice. Try implementing your ideas, and if you get stuck, you may reveal a hint or ask one of the TA’s for help!
+In the Sphere class, implement a slice of the Sphere in the `make_slice()` function stub. Use your `makeTile()` function that you copied over. This is the most difficult task, so we have provided a few hints below if you get stuck. Try thinking about how you may calculate 𝜙 and how you may use that to generate a slice. Try implementing your ideas, and if you get stuck, you may reveal a hint or ask one of the TA’s for help!
 
 <details>
   <summary>What are the `make_slice()` inputs?</summary>
-You’ll notice that the inputs of the `make_slice()` function are `currentTheta` and `nextTheta`. `currentTheta` is the $\theta$ of all the vertices on the left side of the slice, and `nextTheta` is the $\theta$ of all the vertices on the right side of the slice. 
+You’ll notice that the inputs of the `make_slice()` function are `currentTheta` and `nextTheta`. `currentTheta` is the 𝜃 of all the vertices on the left side of the slice, and `nextTheta` is the 𝜃 of all the vertices on the right side of the slice. 
 
 </details>
 
 <details>
-  <summary>🤔Hint: How do I calculate $\phi$?</summary>
-  $\phi = \pi / param1$
+  <summary>🤔Hint: How do I calculate 𝜙?</summary>
+  𝜙 = 𝜋 / param1
   Refer to the diagram in section 3 to understand the reasoning behind this calculation. 
 </details>
 
 <details>
-  <summary>🤔Hint: How do I use $\theta$ and $\phi$ to calculate my four points for `makeTile()`?</summary>
+  <summary>🤔Hint: How do I use 𝜃 and 𝜙 to calculate my four points for `makeTile()`?</summary>
 
 > Note the start and end angles of $\phi$!
 
 You can get the 3D position using the following equations:
-$x = r * sin(\theta) * cos(\phi)$
-$y = r * sin(\theta) * sin(\phi)$
-$z = r * cos(\theta)$
+*x* = *r* * *sin*(𝜃) * *cos*(𝜙)
+*y* = *r* * *sin*(𝜃) * *sin*(𝜙)
+*z* = *r* * *cos*(𝜃)
 </details>
 
 <details>
