@@ -29,7 +29,7 @@ Understanding the coordinate system in OpenGL will save you a lot of debugging t
 
 ### 1.2 Drawing a Triangle
 
-#### 1.2.1 Positions and Normals ####
+### 1.2.1 Positions and Normals ####
 To draw a single triangle in OpenGL, you will need to provide the 3 vertex positions (x, y, z) and 3 unit vector normals (i, j, k) of the triangle. If you combine multiple triangles together, you’ll end up with a 3D shape. In this lab and in the Real-Time projects, these points will be contained in each primitive’s `std::vector<float> m_vertexData`. `m_vertexData` is a longggg list of vertices and normals. The order in which you provide the vertex positions and unit vector normals dictates how the triangle will be rendered. See the diagram below for details.
 > Note: m_vertexData is a vector of floats
 
@@ -42,7 +42,7 @@ To draw a single triangle in OpenGL, you will need to provide the 3 vertex posit
 
 (Fun Fact?)
 
-#### 1.2.2 Calculating Normals ####
+### 1.2.2 Calculating Normals ####
 
 
 ![cross product](cross product image path)
@@ -51,11 +51,11 @@ To draw a single triangle in OpenGL, you will need to provide the 3 vertex posit
 
 > Note: `glm::cross` and `glm::normalize` are super helpful for calculating the normals.
 
-#### 1.2.3 Counter-clockwise Order and Alternating Position and Normals ####
+### 1.2.3 Counter-clockwise Order and Alternating Position and Normals ####
 
 As you can see, `m_vertexData` alternates between vertex positions and normals. The positions are simply the (x,y,z) coordinates of the vertices in world space, and the normals are unit vectors that are perpendicular to the face of the triangle. Most importantly, notice the order in which we provide the vertices for the triangle. The vertex positions and normals are in counter-clockwise order. This is important because of backface culling.
 
-#### 1.2.4 Backface Culling ####
+### 1.2.4 Backface Culling ####
 
 Backface culling determines the visibility of an object. In other words, one side of the triangle will be visible to the viewer, and the other side of the triangle will be invisible. You can read more about [backface culling here](https://en.wikipedia.org/wiki/Back-face_culling)!
 
@@ -63,7 +63,7 @@ Backface culling determines the visibility of an object. In other words, one sid
 
 If your triangle is not visible, it’s likely that your points are in the wrong order. Remember, positions and normals have to go in counterclockwise order!
 
-#### 1.2.5 Composing Multiple Triangles to Create a 3D Shape Mesh ####
+### 1.2.5 Composing Multiple Triangles to Create a 3D Shape Mesh ####
 
 If you combine multiple triangles together, you get a 3D mesh! Neat, right?
 
@@ -160,7 +160,7 @@ Remember polar coordinates $(r, \theta)$ from high school geometry? Spherical co
 
 </details>
 
-#### 3.1 Oranges! 🦧🍊🍊🍊
+### 3.1 Oranges! 🦧🍊🍊🍊
 
 Let’s start by thinking of the sphere as an orange. Oranges are made up of slices and each slice is made up of segments. We can build an orange (aka a sphere) by procedurally generating a collection of orange slices (aka a sphere slice). In the following task, you will implement this orange slice.
 
