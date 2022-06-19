@@ -206,24 +206,24 @@ You’ll notice that the inputs of the `make_slice()` function are `currentTheta
 <details>
   <summary>🤔Hint: How do I calculate 𝜙?</summary>
 	
-𝜙 = 𝜋 / param1
+	𝜙 = 𝜋 / param1
 	
 Refer to the diagram in section 3 to understand the reasoning behind this calculation. 
 	
 </details>
 
 <details>
-  <summary>🤔Hint: How do I use 𝜃 and 𝜙 to calculate my four points for `makeTile()`?</summary>
+  <summary>🤔Hint: How do I use 𝜃 and 𝜙 to calculate my four points for makeTile()?</summary>
 	
 **Note:** The start and end angles of 𝜙!
 
 You can get the 3D position using the following equations:
 
-- *x* = *r* * *sin*(𝜃) * *cos*(𝜙)
+	x = r * sin(𝜃) * cos(𝜙)
 
-- *y* = *r* * *sin*(𝜃) * *sin*(𝜙)
+	y = r * sin(𝜃) * sin(𝜙)
 
-- *z* = *r* * *cos*(𝜃)
+	z = r * cos(𝜃)
 	
 </details>
 
