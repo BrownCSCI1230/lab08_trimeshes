@@ -241,19 +241,21 @@ In the Sphere class, implement a slice of the Sphere in the `make_slice()` funct
 
 <details>
 	<summary>🤔Hint: Pseudocode</summary>
-	
-	For each segment {
-		// calculate currentPhi
-		// calculate nextPhi
 
-		// using currentTheta and currentPhi, calculate the bottomLeft point 
-		// using nextTheta and currentPhi, calculate the bottomRight point 
-		// using currentTheta and nextPhi, calculate the topLeft
-		// using nextTheta and nextPhi, calculate the topRight point 
+```cpp
+For each segment {
+	// calculate currentPhi
+	// calculate nextPhi
 
-		makeTile(topLeft, bottomLeft, bottomRight, topRight)
-		// add output of makeFace to m_vertexData
-	}
+	// using currentTheta and currentPhi, calculate the bottomLeft point 
+	// using nextTheta and currentPhi, calculate the bottomRight point 
+	// using currentTheta and nextPhi, calculate the topLeft
+	// using nextTheta and nextPhi, calculate the topRight point 
+
+	makeTile(topLeft, bottomLeft, bottomRight, topRight)
+	// add output of makeFace to m_vertexData
+}
+```
 	
 </details>
 
@@ -264,14 +266,16 @@ Once you have finished making a singular slice of the orange, it’s time to mak
 <details>
 	<summary>🤔Hint: Pseudocode</summary>
 	
-	For each orange_slice {
+```cpp
+For each orange_slice {
 	// calculate the currentTheta
 	// calculate the nextTheta
-		make_slice();
+	make_slice();
 
 	// add vertices and normals to m_vertexData
-	}
-		
+}
+```
+	
 </details>
 
 ## End
