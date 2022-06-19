@@ -201,29 +201,34 @@ You’ll notice that the inputs of the `make_slice()` function are `currentTheta
 
 <details>
   <summary>🤔Hint: How do I use 𝜃 and 𝜙 to calculate my four points for `makeTile()`?</summary>
-
-> Note the start and end angles of $\phi$!
-
-You can get the 3D position using the following equations:
-*x* = *r* * *sin*(𝜃) * *cos*(𝜙)
-*y* = *r* * *sin*(𝜃) * *sin*(𝜙)
-*z* = *r* * *cos*(𝜃)
+	**Note:** The start and end angles of 𝜙!
+	
+	You can get the 3D position using the following equations:
+	
+	*x* = *r* * *sin*(𝜃) * *cos*(𝜙)
+	
+	*y* = *r* * *sin*(𝜃) * *sin*(𝜙)
+	
+	*z* = *r* * *cos*(𝜃)
+	
 </details>
 
 <details>
   <summary>🤔Hint: Help! But the top and bottom of the slice are triangles???</summary>
-Don’t worry, that’s okay! You can still use your `makeTile()` function to make these triangles. Remember that `makeTile()` generates a plane consisting of two triangles. But what if the two triangles were overlapping 🤔🤔🤔. Then the tile would look like a triangle, right?
-
-In order to make code cleaner and more concise, it’s a good idea to reuse functions where you can. Sometimes, in Computer Graphics that means you will have overlapping triangles, but that’s okay because they are going to appear in the same place anyway 😁.
-
-Think about what input vertex positions to `makeTile()` would yield a triangle, and use that to make the top and bottom of your slice!
-
-(If you really don’t want to use `makeTile()` for the top and bottom triangles, you may implement them separately from your `makeTile()` calls.)
+	
+	Don’t worry, that’s okay! You can still use your `makeTile()` function to make these triangles. Remember that `makeTile()` generates a plane consisting of two triangles. But what if the two triangles were overlapping 🤔🤔🤔. Then the tile would look like a triangle, right?
+	
+	In order to make code cleaner and more concise, it’s a good idea to reuse functions where you can. Sometimes, in Computer Graphics that means you will have overlapping triangles, but that’s okay because they are going to appear in the same place anyway 😁.
+	
+	Think about what input vertex positions to `makeTile()` would yield a triangle, and use that to make the top and bottom of your slice!
+	
+	(If you really don’t want to use `makeTile()` for the top and bottom triangles, you may implement them separately from your `makeTile()` calls.)
+	
 </details>
 
 <details>
-  <summary>🤔Hint: Pseudocode</summary>
-  `` c++
+	<summary>🤔Hint: Pseudocode</summary>
+	
 	For each segment {
 		// calculate currentPhi
 		// calculate nextPhi
@@ -236,7 +241,7 @@ Think about what input vertex positions to `makeTile()` would yield a triangle, 
 		makeTile(topLeft, bottomLeft, bottomRight, topRight)
 		// add output of makeFace to m_vertexData
 	}
-  ``
+	
 </details>
 
 📝 **Task 3.2**
@@ -244,18 +249,27 @@ Think about what input vertex positions to `makeTile()` would yield a triangle, 
 Once you have finished making a singular slice of the orange, it’s time to make the whole orange! Implement the `make_orange()` function stub in the Sphere class. 
 
 <details>
-  <summary>🤔Hint: Pseudocode</summary>
-`` c++
+	<summary>🤔Hint: Pseudocode</summary>
+		
 	For each orange_slice {
-		// calculate the currentTheta
-		// calculate the nextTheta
-		
-make_slice();
-		
-		// add vertices and normals to m_vertexData
+	// calculate the currentTheta
+	// calculate the nextTheta
+		make_slice();
+
+	// add vertices and normals to m_vertexData
 	}
-``
+		
 </details>
+
+``` cpp
+For each orange_slice {
+// calculate the currentTheta
+// calculate the nextTheta
+make_slice();
+
+// add vertices and normals to m_vertexData
+}
+```
 
 ## End
 
