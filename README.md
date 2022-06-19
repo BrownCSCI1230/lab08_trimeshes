@@ -24,7 +24,6 @@ Here are a few concepts that you should know before you implement your Cube and 
 
 Understanding the coordinate system in OpenGL will save you a lot of debugging time later on. It’s simple -- the positive X axis points towards the right of the screen, the positive Y axis points towards the top of the screen, and the positive Z axis points out of the screen towards the viewer. 
 
-
 ![coordinate system](opengl_coor_sys image path)
 
 ### 📌 1.2 Drawing a Triangle
@@ -96,16 +95,18 @@ In the Cube class, implement the `makeTile()` function stub. This function gener
 
 <details>
   <summary>What are the makeTile() inputs and outputs?</summary>
-  makeTile() takes in 3 inputs:
+	
+	makeTile() takes in 3 inputs:
 	`glm::vec3 topLeft`
 	`glm::vec3 bottomLeft`
 	`glm::vec3 bottomRight`
 	`glm::vec3 topRight`
-  These inputs represent 3D coordinates of the top left, bottom left, bottom right, and top right vertex positions of the tile.
-
-  ![example diagram](img path)
-
-makeTile() returns a vector of floats that holds the positions and normals of the tile, which then can be concatenated to `m_vertexData`. Don’t forget about counter-clockwise order!
+	These inputs represent 3D coordinates of the top left, bottom left, bottom right, and top right vertex positions of the tile.
+	
+	![example diagram](img path)
+	
+	`makeTile()` returns a vector of floats that holds the positions and normals of the tile, which then can be concatenated to `m_vertexData`. Don’t forget about counter-clockwise order!
+	
 </details>
 
 Your tile should look like this:
@@ -118,14 +119,18 @@ In the Cube class, implement the positive x side of the Cube in the `makeFace()`
 
 <details>
   <summary>What are the makeFace() inputs?</summary>
-  You’ll notice in the `makeFace()` function call, we have provided the coordinates of the 4 corners of the positive x face. Refer to the stencil code for more information about the inputs to the `makeFace()` function.
+	
+	You’ll notice in the `makeFace()` function call, we have provided the coordinates of the 4 corners of the positive x face. Refer to the stencil code for more information about the inputs to the `makeFace()` function.
+	
 </details>
 
 > Note: Don’t forget that param 1 controls the number of triangles in each row and column!
 
 <details>
   <summary>🤔Hint: How do I use the `makeTile()` function?</summary>
-  The key here is to know what the four points you need to pass into `makeTile()`. Take a look at how parameter 1  affects the tessellation of the plane, and how it changes the intervals of where the vertex positions are located.
+	
+	The key here is to know what the four points you need to pass into `makeTile()`. Take a look at how parameter 1  affects the tessellation of the plane, and how it changes the intervals of where the vertex positions are located.
+	
 </details>
 
 You should end up with something that looks like this:
@@ -151,13 +156,16 @@ The shape parameters for Sphere are slightly different than Cube. The first para
 <details>
   <summary>How Parameters 1 and 2 Affects Sphere Diagram</summary>
 
+	*TODO insert image*
+	
 </details>
 
 <details>
   <summary>Spherical Coordinates Diagram</summary>
 
-
-Remember polar coordinates (*r*, 𝜃) from high school geometry? Spherical coordinates (*r*, 𝜃, 𝜙) are like polar coordinates, but in 3D! Read this [Wikipedia article on the Spherical Coordinate System](https://en.wikipedia.org/wiki/Spherical_coordinate_system) if you need a refresher!
+	TODO
+	
+	Remember polar coordinates (*r*, 𝜃) from high school geometry? Spherical coordinates (*r*, 𝜃, 𝜙) are like polar coordinates, but in 3D! Read this [Wikipedia article on the Spherical Coordinate System](https://en.wikipedia.org/wiki/Spherical_coordinate_system) if you need a refresher!
 
 </details>
 
@@ -169,9 +177,9 @@ Let’s start by thinking of the sphere as an orange. Oranges are made up of sli
 
 <details>
   <summary>How does thinking of orange slices relate to this?</summary>
-  The number of slices in the orange are controlled by param 2 (which is used to calculate 𝜃). The 
-  number of segments are controlled by param 1 (which is used to calculate 𝜙). Using both these 
-  parameters, we can determine the exact 3D location of each vertex!
+	
+	The number of slices in the orange are controlled by param 2 (which is used to calculate 𝜃). The number of segments are controlled by param 1 (which is used to calculate 𝜙). Using both these parameters, we can determine the exact 3D location of each vertex!
+	
 </details>
 
 By using 𝜃 and 𝜙, we can get every vertex position by rotating a vector about the origin. 
@@ -189,18 +197,23 @@ In the Sphere class, implement a slice of the Sphere in the `make_slice()` funct
 
 <details>
   <summary>What are the `make_slice()` inputs?</summary>
-You’ll notice that the inputs of the `make_slice()` function are `currentTheta` and `nextTheta`. `currentTheta` is the 𝜃 of all the vertices on the left side of the slice, and `nextTheta` is the 𝜃 of all the vertices on the right side of the slice. 
+	
+	You’ll notice that the inputs of the `make_slice()` function are `currentTheta` and `nextTheta`. `currentTheta` is the 𝜃 of all the vertices on the left side of the slice, and `nextTheta` is the 𝜃 of all the vertices on the right side of the slice. 
 
 </details>
 
 <details>
   <summary>🤔Hint: How do I calculate 𝜙?</summary>
-  𝜙 = 𝜋 / param1
-  Refer to the diagram in section 3 to understand the reasoning behind this calculation. 
+	
+	𝜙 = 𝜋 / param1
+	
+	Refer to the diagram in section 3 to understand the reasoning behind this calculation. 
+	
 </details>
 
 <details>
   <summary>🤔Hint: How do I use 𝜃 and 𝜙 to calculate my four points for `makeTile()`?</summary>
+	
 	**Note:** The start and end angles of 𝜙!
 	
 	You can get the 3D position using the following equations:
@@ -260,16 +273,6 @@ Once you have finished making a singular slice of the orange, it’s time to mak
 	}
 		
 </details>
-
-``` cpp
-For each orange_slice {
-// calculate the currentTheta
-// calculate the nextTheta
-make_slice();
-
-// add vertices and normals to m_vertexData
-}
-```
 
 ## End
 
