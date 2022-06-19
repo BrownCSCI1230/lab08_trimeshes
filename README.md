@@ -263,7 +263,7 @@ Once you have finished making a singular slice of the orange, it’s time to mak
 
 <details>
 	<summary>🤔Hint: Pseudocode</summary>
-		
+	
 	For each orange_slice {
 	// calculate the currentTheta
 	// calculate the nextTheta
