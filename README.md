@@ -33,17 +33,13 @@ Understanding the coordinate system in OpenGL will save you a lot of debugging t
 To draw a single triangle in OpenGL, you will need to provide the 3 vertex positions (x, y, z) and 3 unit vector normals (i, j, k) of the triangle. If you combine multiple triangles together, you’ll end up with a 3D shape. In this lab and in the Real-Time projects, these points will be contained in each primitive’s `std::vector<float> m_vertexData`. `m_vertexData` is a longggg list of vertices and normals. The order in which you provide the vertex positions and unit vector normals dictates how the triangle will be rendered. See the diagram below for details.
 > Note: m_vertexData is a vector of floats
 
-
 ![triangle](triangle diagram image path)
-
 
 ![hard-coded cube](cube diagram image path)
 > Note: the list of vertices and normals can contain repeats since the vertex/normal will appear in the same place
 
-(Fun Fact?)
 
 #### 🔎 1.2.2 Calculating Normals ####
-
 
 ![cross product](cross product image path)
 
