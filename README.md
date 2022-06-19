@@ -20,16 +20,17 @@ By the end of this lab, you will:
 
 Here are a few concepts that you should know before you implement your Cube and Sphere. These concepts are outlined below.
 
-### 1.1. OpenGL’s 3D Coordinate System
+### 📌 1.1. OpenGL’s 3D Coordinate System
 
 Understanding the coordinate system in OpenGL will save you a lot of debugging time later on. It’s simple -- the positive X axis points towards the right of the screen, the positive Y axis points towards the top of the screen, and the positive Z axis points out of the screen towards the viewer. 
 
 
 ![coordinate system](opengl_coor_sys image path)
 
-### 1.2 Drawing a Triangle
+### 📌 1.2 Drawing a Triangle
 
-### 1.2.1 Positions and Normals ####
+#### 🔎 1.2.1 Positions and Normals ####
+
 To draw a single triangle in OpenGL, you will need to provide the 3 vertex positions (x, y, z) and 3 unit vector normals (i, j, k) of the triangle. If you combine multiple triangles together, you’ll end up with a 3D shape. In this lab and in the Real-Time projects, these points will be contained in each primitive’s `std::vector<float> m_vertexData`. `m_vertexData` is a longggg list of vertices and normals. The order in which you provide the vertex positions and unit vector normals dictates how the triangle will be rendered. See the diagram below for details.
 > Note: m_vertexData is a vector of floats
 
@@ -42,7 +43,7 @@ To draw a single triangle in OpenGL, you will need to provide the 3 vertex posit
 
 (Fun Fact?)
 
-### 1.2.2 Calculating Normals ####
+#### 🔎 1.2.2 Calculating Normals ####
 
 
 ![cross product](cross product image path)
@@ -51,11 +52,11 @@ To draw a single triangle in OpenGL, you will need to provide the 3 vertex posit
 
 > Note: `glm::cross` and `glm::normalize` are super helpful for calculating the normals.
 
-### 1.2.3 Counter-clockwise Order and Alternating Position and Normals ####
+#### 🔎 1.2.3 Counter-clockwise Order and Alternating Position and Normals ####
 
 As you can see, `m_vertexData` alternates between vertex positions and normals. The positions are simply the (x,y,z) coordinates of the vertices in world space, and the normals are unit vectors that are perpendicular to the face of the triangle. Most importantly, notice the order in which we provide the vertices for the triangle. The vertex positions and normals are in counter-clockwise order. This is important because of backface culling.
 
-### 1.2.4 Backface Culling ####
+#### 🔎 1.2.4 Backface Culling ####
 
 Backface culling determines the visibility of an object. In other words, one side of the triangle will be visible to the viewer, and the other side of the triangle will be invisible. You can read more about [backface culling here](https://en.wikipedia.org/wiki/Back-face_culling)!
 
@@ -63,7 +64,7 @@ Backface culling determines the visibility of an object. In other words, one sid
 
 If your triangle is not visible, it’s likely that your points are in the wrong order. Remember, positions and normals have to go in counterclockwise order!
 
-### 1.2.5 Composing Multiple Triangles to Create a 3D Shape Mesh ####
+#### 🔎 1.2.5 Composing Multiple Triangles to Create a 3D Shape Mesh ####
 
 If you combine multiple triangles together, you get a 3D mesh! Neat, right?
 
@@ -72,7 +73,7 @@ TODO: include screenshots of the Cube, Cone, Cylinder, and Sphere primitives
 ### Stencil Code and Interacting with the UI ###
 TODO: explanation of UI and stencil code. Will do this after we write the code lol
 
-**Task 1**
+📝 **Task 1**
 
 In the Triangle class, fill out the `tessellate_triangle()` function stub. Use the coordinate points (-0.5, -0.5, 0), (0.5, -0.5, 0), (0, 0.5, 0). Don’t forget the normals!
 
@@ -89,7 +90,7 @@ You’ll notice that there are sliders on the left side of the screen that contr
 
 ![Cube tessellation params](image path)
 
-**Task 2.1**
+📝 **Task 2.1**
 
 In the Cube class, implement the `makeTile()` function stub. This function generates a plane composed of two triangles. Don’t forget the normals!
 
@@ -111,7 +112,7 @@ Your tile should look like this:
 
 ![task2 tile](gif path)
 
-**Task 2.2**
+📝 **Task 2.2**
 
 In the Cube class, implement the positive x side of the Cube in the `makeFace()` function stub. Use the `makeTile()` function you wrote in Task 2.1. 
 
@@ -133,7 +134,7 @@ You should end up with something that looks like this:
 
 You will use what you write here to generate all six sides of the Cube for the next task.
 
-**Task 2.3**
+📝 **Task 2.3**
 
 Now that you have one side of the Cube, you should be able to implement all 6 sides of your Cube using the `makeFace()` function you implemented. It may be helpful to draw a diagram of the Cube to figure out the positions of all its corners!
 
@@ -141,7 +142,7 @@ Your Cube should now look like this:
 
 ![task2.2 cube gif][gif path]
 
-### 3. Sphere
+## 3. Sphere
 
 Yay! Congratulations on making your Cube! 🙌 It’s to time to make a Sphere 🥳🎉 This is a wee bit more complicated, but don’t worry we’ll walk you through it!
 
@@ -160,7 +161,7 @@ Remember polar coordinates $(r, \theta)$ from high school geometry? Spherical co
 
 </details>
 
-### 3.1 Oranges! 🦧🍊🍊🍊
+### 📌 3.1 Oranges! 🦧🍊🍊🍊
 
 Let’s start by thinking of the sphere as an orange. Oranges are made up of slices and each slice is made up of segments. We can build an orange (aka a sphere) by procedurally generating a collection of orange slices (aka a sphere slice). In the following task, you will implement this orange slice.
 
@@ -178,11 +179,11 @@ By using $\theta$ and $\phi$, we can get every vertex position by rotating a vec
 > Note: You may find the following useful in your implementation: `glm::radians()`, `glm::sin()`, and `glm::cos()`
 > Note: Everything is in radians!
 
-**Task 3.1.1**
+📝 **Task 3.1.1**
 
 Copy your `makeTile()` function from your Cube class into the Sphere class. You will use this function when implementing Sphere.
 
-**Task 3.1.2**
+📝 **Task 3.1.2**
 
 In the Sphere class, implement a slice of the Sphere in the `make_slice()` function stub. Use your `makeTile()` function that you copied over. This is the most difficult task, so we have provided a few hints below if you get stuck. Try thinking about how you may calculate $\phi$ and how you may use that to generate a slice. Try implementing your ideas, and if you get stuck, you may reveal a hint or ask one of the TA’s for help!
 
@@ -205,7 +206,7 @@ You’ll notice that the inputs of the `make_slice()` function are `currentTheta
 
 You can get the 3D position using the following equations:
 $x = r * sin(\theta) * cos(\phi)$
-$y = r * sin(\theta) * sin(\phit)$
+$y = r * sin(\theta) * sin(\phi)$
 $z = r * cos(\theta)$
 </details>
 
@@ -238,7 +239,7 @@ Think about what input vertex positions to `makeTile()` would yield a triangle, 
   ``
 </details>
 
-**Task 3.2**
+📝 **Task 3.2**
 
 Once you have finished making a singular slice of the orange, it’s time to make the whole orange! Implement the `make_orange()` function stub in the Sphere class. 
 
