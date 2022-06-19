@@ -2,6 +2,16 @@
 
 [GitHub Classroom assignment](https://google.com)
 
+𝜃
+
+<details>
+  <summary>Test</summary> 
+	$(r, \theta)$ blah blah blah $(r, \theta, \phi)$
+	test : 𝜃
+</details>
+
+$(r, \theta)$ blah blah blah $(r, \theta, \phi)$
+
 ## 0. Intro
 
 One of the fundamental applications of computer graphics is to display three-dimensional scenes. The catch, however, is that screens can only display two-dimensional images. Therefore, there needs to be some way to convert a three-dimensional scene to something that can be viewed in two dimensions. A common method, which we will use in this lab, is to compose a scene using only triangles, then project those triangles to the screen, drawing each one sequentially.
@@ -97,10 +107,10 @@ In the Cube class, implement the `makeTile()` function stub. This function gener
 <details>
   <summary>What are the makeTile() inputs and outputs?</summary>
   makeTile() takes in 3 inputs:
-glm::vec3 topLeft
-glm::vec3 bottomLeft
-glm::vec3 bottomRight
-glm::vec3 topRight
+	`glm::vec3 topLeft`
+	`glm::vec3 bottomLeft`
+	`glm::vec3 bottomRight`
+	`glm::vec3 topRight`
   These inputs represent 3D coordinates of the top left, bottom left, bottom right, and top right vertex positions of the tile.
 
   ![example diagram](img path)
@@ -146,7 +156,7 @@ Your Cube should now look like this:
 
 Yay! Congratulations on making your Cube! 🙌 It’s to time to make a Sphere 🥳🎉 This is a wee bit more complicated, but don’t worry we’ll walk you through it!
 
-The shape parameters for Sphere are slightly different than Cube. The first parameter controls the number of ‘layers’ in the vertical direction, and the second parameter controls the number of ‘layers’ in the horizontal direction, as shown below. You can also think about this in terms of latitude and longitude -- param 1 controls latitude, and param 2 controls longitude. In term of spherical coordinates, parameter 1 controls $\phi$ and parameter 2 controls $/theta$.
+The shape parameters for Sphere are slightly different than Cube. The first parameter controls the number of ‘layers’ in the vertical direction, and the second parameter controls the number of ‘layers’ in the horizontal direction, as shown below. You can also think about this in terms of latitude and longitude -- param 1 controls latitude, and param 2 controls longitude. In term of spherical coordinates, parameter 1 controls $\phi$ and parameter 2 controls $\theta$.
 
 <details>
   <summary>How Parameters 1 and 2 Affects Sphere Diagram</summary>
