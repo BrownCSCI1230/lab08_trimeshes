@@ -6,9 +6,9 @@
 
 One of the fundamental applications of computer graphics is to display three-dimensional scenes. The catch, however, is that screens can only display two-dimensional images. Therefore, there needs to be some way to convert a three-dimensional scene to something that can be viewed in two dimensions. A common method, which we will use in this lab, is to compose a scene using only triangles, then project those triangles to the screen, drawing each one sequentially.
 
-In this lab, you will be writing the portion of this process that pertains to tesselating objects. You will be breaking up these 3D objects, or primitives, into a lot of triangles that, when put together, look as much like the desired primitive as possible. Note that curved surfaces can be better approximated using more triangles, but keep in mind that the more triangles we draw the more triangles we compute, and a major motivation behind tessellating objects is to simplify the process of displaying them.
+In this lab, you will be writing the portion of this process that pertains to tesselating objects. You will be breaking up these 3D objects into a lot of triangles that, when put together, look as much like the desired 3D shape as possible. Note that curved surfaces can be better approximated using more triangles, but keep in mind that the more triangles we draw the more triangles we compute, and a major motivation behind tessellating objects is to simplify the process of displaying them.
 
-In the Real-Time projects, you will be displaying scenes made up of 3D shapes: Cube, Cone, Cylinder, and Sphere. In this lab, you will be implementing two of the four primitives, Cube and Sphere. You will implement the remaining shapes, Cylinder and Cone, in the Real-Time Project #1. Throughout the rest of this handout there will be a couple of suggestions that we highly encourage you to consider in your design.
+In the Real-Time projects, you will be displaying scenes made up of the following 3D shapes: Cube, Cone, Cylinder, and Sphere. In this lab, you will be implementing two of the four shapes, Cube and Sphere. You will implement the remaining shapes, Cylinder and Cone, in the first Real-Time Project. Throughout the rest of this handout there will be a couple of suggestions that we highly encourage you to consider in your design.
 
 By the end of this lab, you will:
 
@@ -22,79 +22,97 @@ Here are a few concepts that you should know before you implement your Cube and 
 
 ### 📌 1.1. OpenGL’s 3D Coordinate System
 
-Understanding the coordinate system in OpenGL will save you a lot of debugging time later on. It’s simple -- the positive X axis points towards the right of the screen, the positive Y axis points towards the top of the screen, and the positive Z axis points out of the screen towards the viewer. 
+Understanding the coordinate system in OpenGL will save you a lot of debugging time later on. As shown in [Figure 1](#-11-opengls-3d-coordinate-system) below, the positive X axis points towards the right of the screen, the positive Y axis points towards the top of the screen, and the positive Z axis points out of the screen towards the viewer. 
 
 <img src="handout_images/coor_sys.png" width="1000">
+<p align="center"> <b>Figure 1</b>: OpenGL Coordinate System </p>
+
 
 ### 📌 1.2 Drawing a Triangle
 
 #### 🔎 1.2.1 Positions and Normals ####
 
-To draw a single triangle in OpenGL, you will need to provide the 3 vertex positions (x, y, z) and 3 unit vector normals (i, j, k) of the triangle. If you combine multiple triangles together, you’ll end up with a 3D shape. In this lab and in the Real-Time projects, these points will be contained in each primitive’s `std::vector<float> m_vertexData`. `m_vertexData` is a longggg list of vertices and normals. The order in which you provide the vertex positions and unit vector normals dictates how the triangle will be rendered. See the diagram below for details.
-> Note: m_vertexData is a vector of floats
-
 <p align="center">
 	<img src="handout_images/triangle_example.png" width="650" margin"auto">
+	<p align="center"> <b>Figure 2</b>: Drawing a Triangle </p>
 </p>
 
-<p align="center">
-	<img src="handout_images/m_vertex_data.png" width="650" margin"auto">
-</p>
-> Note: the list of vertices and normals can contain repeats since the vertex/normal will appear in the same place
-
+As shown in [Figure 2](#-12-drawing-a-triangle) above, to draw a single triangle in OpenGL, you will need to provide the 3 vertex positions (*x*, *y*, *z*) and 3 unit vector normals (*i*, *j*, *k*) of the triangle. The positions are simply the (*x*,*y*,*z*) coordinates of the vertices in world space, and the normals are unit vectors that are perpendicular to the face of the triangle. In this lab and in the Real-Time projects, these points will be contained in a vector of floats, called `std::vector<float> m_vertexData`.
 
 #### 🔎 1.2.2 Calculating Normals ####
 
 <p align="center">
 	<img src="handout_images/normals.png" width="800" margin"auto">
+	<p align="center"> <b>Figure 4</b>: Calculating Cross Product </p>
 </p>
 
-> Note: Order of cross product matters! If the lighting of the triangle is off, it’s likely that your normals are wrong. Remember the right-hand rule?
+As you learned in the Ray projects, we need to provide the normals of each vertex in a 3D shape to correctly light the 3D shape. Recall from Lab07 Terrain that normals are perpendicular to the surface. As shown in [Figure 4](#-122-calculating-normals) above, normals can be calculated by taking the cross product of two vectors. These two vectors can be created from three vertices.
+
+> Note: Order of cross product matters! If the lighting of the triangle is off, it’s likely that your normals are wrong.
 
 > Note: `glm::cross` and `glm::normalize` are super helpful for calculating the normals.
 
 #### 🔎 1.2.3 Counter-clockwise Order and Alternating Position and Normals ####
 
-As you can see, `m_vertexData` alternates between vertex positions and normals. The positions are simply the (x,y,z) coordinates of the vertices in world space, and the normals are unit vectors that are perpendicular to the face of the triangle. Most importantly, notice the order in which we provide the vertices for the triangle. The vertex positions and normals are in counter-clockwise order. This is important because of backface culling.
+You may have noticed in [Figure 2](#-121-positions-and-normals), `m_vertexData` alternates between vertex positions and normals. *Most importantly, you'll also that the vertices and normals are in counter-clockwise order.* Why does this matter? Because of backface culling!
 
 #### 🔎 1.2.4 Backface Culling ####
 
-Backface culling determines the visibility of an object. In other words, one side of the triangle will be visible to the viewer, and the other side of the triangle will be invisible. You can read more about [backface culling here](https://en.wikipedia.org/wiki/Back-face_culling)!
-
 <p align="center">
-<img src="handout_images/amog-us-among-us.gif" width="300">
+	<img src="handout_images/amog-us-among-us.gif" width="300">
+	<p align="center"> <b>Figure 5</b>: Backface Culling </p>
 </p>
-
 <!---![gif of rotating triangle showing both sides of the triangle](gif file path)--->
 
-If your triangle is not visible, it’s likely that your points are in the wrong order. Remember, positions and normals have to go in counterclockwise order!
+As shown in [Figure 5](#-124-backface-culling) above, backface culling determines the visibility of a triangle. In other words, one side of the triangle will be visible to the viewer, and the other side of the triangle will be invisible. You can read more about [backface culling here](https://en.wikipedia.org/wiki/Back-face_culling)!
+
+If your triangle is not visible, it’s likely that your points are in the wrong order. Remember, positions and normals have to go in *counter-clockwise* order!
 
 #### 🔎 1.2.5 Composing Multiple Triangles to Create a 3D Shape Mesh ####
 
-If you combine multiple triangles together, you get a 3D mesh! Neat, right?
+<p align="center">
+	<img src="handout_images/m_vertex_data.png" width="650" margin"auto">
+	<p align="center"> <b>Figure 6</b>: Hardcoded Cube </p>
+</p>
 
-TODO: include screenshots of the Cube, Cone, Cylinder, and Sphere primitives
+Recall in [1.2.1 Drawing a Triangle](#-12-drawing-a-triangle) how to draw a triangle. As shown in [Figure 6](#-125-composing-multiple-triangles-to-create-a-3d-shape-mesh) above, if you combine multiple triangles together, you’ll end up with a 3D mesh! Neat, right?
+
+To do this, we provide every vertex and normal in the 3D shape to `m_vertexData`. Every triangle is then consecutively drawn to create the full 3D mesh.
+
+> Notice that `m_vertexData` can contain repeats since the vertex/normal will appear in the same place! 
+
+> Don't forget about alternating vertices and normals and counter-clockwise ordering!
+
+Below are other examples of how we can use triangles to make different 3D meshes. The more triangles there are, the more complex the object can be!
+<p align="center">
+<img src="handout_images/amog-us-among-us.gif" width="300">
+</p>
+<!--- images or gifs of trimeshes --->
+
 
 ### Stencil Code and Interacting with the UI ###
-TODO: explanation of UI and stencil code. Will do this after we write the code lol
+**TODO**: explanation of UI and stencil code. Will do this after we write the code lol
 
 📝 **Task 1**
 
-In the Triangle class, fill out the `tessellate_triangle()` function stub. Use the coordinate points (-0.5, -0.5, 0), (0.5, -0.5, 0), (0, 0.5, 0). Don’t forget the normals!
+Now that you know everything you need to know about triangles and trimeshes, it's time to create your own!
+
+You will first draw a triangle. In the Triangle class, fill out the `tessellate_triangle()` function stub. Use the coordinate points (-0.5, -0.5, 0), (0.5, -0.5, 0), (0, 0.5, 0). Don’t forget the normals!
 
 Your triangle should look like this:
 
 <p align="center">
 <img src="handout_images/amog-us-among-us.gif" width="300">
 </p>
-
 <!---![task1 triangle](triangle screenshot image path)--->
 
 ## 2. Cube
 
-Now it’s time to start creating the primitives 🤗😇😎. Each primitive is centered at the origin, and has a radius of 1. In other words, they lie in the range [-0.5, 0.5] on all axes. 
+Now that you know how to create a triagnle, you'll soon be able to start creating your own 3D shapes 🤗😇😎. 
 
-You’ll notice that there are sliders on the left side of the screen that control the shape parameters. These parameters control the number of triangles used to tessellate each face of the Cube. 
+For our purposes, each shape is centered at the origin, and has a radius of 1. In other words, they lie in the range [-0.5, 0.5] on all axes. 
+
+As shown below, you’ll notice that there are sliders on the left side of the screen that control the shape parameters. These parameters control the number of triangles used to tessellate each face of the Cube. 
 
 <p align="center">
 	<img src="handout_images/cube_parameters.jpeg" width="650" margin"auto">
@@ -102,18 +120,16 @@ You’ll notice that there are sliders on the left side of the screen that contr
 
 📝 **Task 2.1**
 
-In the Cube class, implement the `makeTile()` function stub. This function generates a plane composed of two triangles. Don’t forget the normals!
+To create our Cube, you'll first create a tile comprised of two triangles as shown below. In the Cube class, implement the `makeTile()` function stub. This function generates a plane composed of two triangles. Don’t forget the normals!
 
 <details>
-  <summary>What are the makeTile() inputs and outputs?</summary>
+  <summary><b>What are the makeTile() inputs and outputs?</b></summary>
 	
 makeTile() takes in 3 inputs:
-- `glm::vec3 topLeft`
-- `glm::vec3 bottomLeft`
-- `glm::vec3 bottomRight`
-- `glm::vec3 topRight`
-
-These inputs represent 3D coordinates of the top left, bottom left, bottom right, and top right vertex positions of the tile.
+- `glm::vec3 topLeft`: the position of the top left vertex
+- `glm::vec3 bottomLeft`: the position of the bottom left vertex
+- `glm::vec3 bottomRight`: the position of the bottom right vertex
+- `glm::vec3 topRight`: the position of the top right vertex
 
 <p align="center">
 <img src="handout_images/amog-us-among-us.gif" width="300">
