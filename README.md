@@ -93,11 +93,11 @@ Below are other examples of how we can use triangles to make different 3D meshes
 ### Stencil Code and Interacting with the UI ###
 **TODO**: explanation of UI and stencil code. Will do this after we write the code lol
 
-📝 **Task 1**
+📝 **Task 1 : Make a Triangle**
 
-Now that you know everything you need to know about triangles and trimeshes, it's time to create your own trimeshes!
+Now that you know everything you need to know about triangles and trimeshes, you're ready to begin creating your own trimeshes!
 
-You will first draw a triangle. In the Triangle class, fill out the `tessellate_triangle()` function stub. Use the coordinate points 
+You will first draw a triangle. In the Triangle class, fill out the `tessellate_triangle()` function stub. Use the following coordinate points:
 - `(-0.5, -0.5, 0)`
 - `(0.5, -0.5, 0)`
 - `(0, 0.5, 0)`
@@ -113,7 +113,7 @@ Your triangle should look like this:
 
 ## 2. Cube
 
-Now that you know how to create a triagnle, you'll soon be able to start creating your own 3D shapes 🤗😇😎. 
+Now that you know how to create a triangle, you'll soon be able to start creating your own 3D shapes 🤗😇😎. 
 
 For our purposes, each shape is centered at the origin, and has a radius of 1. In other words, they lie in the range [-0.5, 0.5] on all axes. 
 
@@ -123,9 +123,9 @@ As shown below, you’ll notice that there are sliders on the left side of the s
 	<img src="handout_images/cube_parameters.jpeg" width="650" margin"auto">
 </p>
 
-📝 **Task 2.1**
+📝 **Task 2.1 : Make a Tile**
 
-To create our Cube, you'll first create a tile comprised of two triangles as shown below. In the Cube class, implement the `makeTile()` function stub. This function generates a plane composed of two triangles. Don’t forget the normals!
+To create our Cube, you'll first create a plane comprised of two triangles as shown below. In the Cube class, implement the `makeTile()` function stub. Don’t forget the normals!
 
 <details><summary><b>What are the makeTile() inputs and outputs?</b></summary>
 	
@@ -152,7 +152,7 @@ Your tile should look like this:
 </p>
 <!---![task2 tile](gif path)--->
 
-📝 **Task 2.2**
+📝 **Task 2.2 : Make a Cube Face**
 
 Now that you have your tile, you can create one face of the Cube! In the Cube class, implement the positive x side of the Cube in the `makeFace()` function stub. The face should tesselate differently depending on parameter 1. Use the `makeTile()` function you wrote in Task 2.1.
 
@@ -185,7 +185,7 @@ The key here is to know what the four points you need to pass into `makeTile()`.
 	
 </details>
 
-📝 **Task 2.3**
+📝 **Task 2.3 : Make a Full Cube**
 
 Now that you have one side of the Cube, you should be able to implement all 6 sides of your Cube using the `makeFace()` function you implemented. It may be helpful to draw a diagram of the Cube to figure out the positions of all its corners!
 
@@ -207,7 +207,7 @@ Yay! Congratulations on making your Cube! 🙌 It’s to time to make a Sphere �
 	
 As shown above, the shape parameters for Sphere are slightly different than Cube. The first parameter controls the number of ‘layers’ in the vertical direction (like latitude), and the second parameter controls the number of ‘layers’ in the horizontal direction (like longitude).
 
-When you implement Sphere, you will think of the parameters in term of spherical coordinates: parameter 1 controls 𝜙 and parameter 2 controls 𝜃.
+In terms of spherical coordinates: parameter 1 controls 𝜙 and parameter 2 controls 𝜃.
 	  
 > Note: Like Cube, the Sphere is centered at (0, 0, 0) and has a radius of 0.5
 
@@ -244,11 +244,11 @@ Using both these parameters and knowing that the radius is 0.5, we can determine
 	
 </details>
 
-📝 **Task 3.1.1**
+📝 **Task 3.1.1 : Copy makeTile() to Sphere**
 
 Copy your `makeTile()` function from your Cube class into the Sphere class. You will use this function when implementing Sphere.
 
-📝 **Task 3.1.2**
+📝 **Task 3.1.2 : Make a Slice**
 
 In the Sphere class, implement a slice of the Sphere in the `make_slice()` function stub. Use your `makeTile()` function that you copied over. This is the most difficult task, so we have provided a few hints below if you get stuck. Try thinking about how you may calculate 𝜙 and how you may use that to generate a slice. Try implementing your ideas, and if you get stuck, you may reveal a hint or ask one of the TA’s for help!
 
@@ -339,7 +339,7 @@ For each segment {
 	
 </details>
 
-📝 **Task 3.2**
+📝 **Task 3.2 : Make a Full Sphere**
 
 Once you have finished making a singular slice of the orange, it’s time to make the whole orange! Implement the `make_orange()` function stub in the Sphere class.
 
