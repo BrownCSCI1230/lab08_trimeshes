@@ -24,7 +24,7 @@ Here are a few concepts that you should know before you implement your Cube and 
 
 Understanding the coordinate system in OpenGL will save you a lot of debugging time later on. It’s simple -- the positive X axis points towards the right of the screen, the positive Y axis points towards the top of the screen, and the positive Z axis points out of the screen towards the viewer. 
 
-![coordinate system](opengl_coor_sys image path)
+<img src="handout_images/coor_sys.png" width="1000">
 
 ### 📌 1.2 Drawing a Triangle
 
@@ -33,15 +33,21 @@ Understanding the coordinate system in OpenGL will save you a lot of debugging t
 To draw a single triangle in OpenGL, you will need to provide the 3 vertex positions (x, y, z) and 3 unit vector normals (i, j, k) of the triangle. If you combine multiple triangles together, you’ll end up with a 3D shape. In this lab and in the Real-Time projects, these points will be contained in each primitive’s `std::vector<float> m_vertexData`. `m_vertexData` is a longggg list of vertices and normals. The order in which you provide the vertex positions and unit vector normals dictates how the triangle will be rendered. See the diagram below for details.
 > Note: m_vertexData is a vector of floats
 
-![triangle](triangle diagram image path)
+<p align="center">
+	<img src="handout_images/triangle_example.png" width="650" margin"auto">
+</p>
 
-![hard-coded cube](cube diagram image path)
+<p align="center">
+	<img src="handout_images/m_vertex_data.png" width="650" margin"auto">
+</p>
 > Note: the list of vertices and normals can contain repeats since the vertex/normal will appear in the same place
 
 
 #### 🔎 1.2.2 Calculating Normals ####
 
-![cross product](cross product image path)
+<p align="center">
+	<img src="handout_images/normals.png" width="800" margin"auto">
+</p>
 
 > Note: Order of cross product matters! If the lighting of the triangle is off, it’s likely that your normals are wrong. Remember the right-hand rule?
 
@@ -82,8 +88,9 @@ Now it’s time to start creating the primitives 🤗😇😎. Each primitive is
 
 You’ll notice that there are sliders on the left side of the screen that control the shape parameters. These parameters control the number of triangles used to tessellate each face of the Cube. 
 
-
-![Cube tessellation params](image path)
+<p align="center">
+	<img src="handout_images/cube_parameters.png" width="650" margin"auto">
+</p>
 
 📝 **Task 2.1**
 
@@ -132,7 +139,9 @@ The key here is to know what the four points you need to pass into `makeTile()`.
 
 You should end up with something that looks like this:
 
-![task2 cube side](image path)
+<p align="center">
+	<img src="make_tile.png" width="650" margin"auto">
+</p>
 
 You will use what you write here to generate all six sides of the Cube for the next task.
 
@@ -153,14 +162,22 @@ The shape parameters for Sphere are slightly different than Cube. The first para
 <details>
   <summary>How Parameters 1 and 2 Affects Sphere Diagram</summary>
 
-	*TODO insert image*
+<p align="center">
+<img src="handout_images/sphere_params.png" width="650" margin"auto">
+</p>
 	
 </details>
 
 <details>
   <summary>Spherical Coordinates Diagram</summary>
 
-TODO insert image
+<p align="center">
+<img src="handout_images/curr_next_theta.png" width="650" margin"auto">
+</p>
+
+<p align="center">
+<img src="handout_images/phi_exp.png" width="650" margin"auto">
+</p>
 	
 Remember polar coordinates (*r*, 𝜃) from high school geometry? Spherical coordinates (*r*, 𝜃, 𝜙) are like polar coordinates, but in 3D! Read this [Wikipedia article on the Spherical Coordinate System](https://en.wikipedia.org/wiki/Spherical_coordinate_system) if you need a refresher!
 
@@ -170,7 +187,9 @@ Remember polar coordinates (*r*, 𝜃) from high school geometry? Spherical coor
 
 Let’s start by thinking of the sphere as an orange. Oranges are made up of slices and each slice is made up of segments. We can build an orange (aka a sphere) by procedurally generating a collection of orange slices (aka a sphere slice). In the following task, you will implement this orange slice.
 
-![orange slice](image path)
+<p align="center">
+	<img src="handout_images/orange_slice.png" width="300" margin"auto">
+</p>
 
 <details>
   <summary>How does thinking of orange slices relate to this?</summary>
