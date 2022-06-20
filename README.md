@@ -293,6 +293,12 @@ For each segment {
 	
 </details>
 
+Your slice should look like this:
+<p align="center">
+<img src="handout_images/amog-us-among-us.gif" width="300">
+</p>
+<!---![slice gif](slice gif spinning)--->
+
 📝 **Task 3.2**
 
 Once you have finished making a singular slice of the orange, it’s time to make the whole orange! Implement the `make_orange()` function stub in the Sphere class. 
