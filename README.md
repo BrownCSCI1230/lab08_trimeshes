@@ -377,6 +377,6 @@ For each orange_slice {
 
 Now you’re ready to show your work to a TA and get checked off! Congrats on finishing the Trimeshez lab 🥳🎉
 
-🥟 **Food for Thought** 🍾🥂
+### 🥟 Food for Thought 🍾🥂
 
 Next week, you will be learning how to use OpenGL to render triangle meshes. OpenGL uses VBOs (vertex buffer objects) which store a list of vertices similar to `m_vertexData` in this lab. You’ll learn more about this next week, but we just wanted to give you a brief intro. Good luck!
