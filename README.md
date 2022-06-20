@@ -61,7 +61,11 @@ As you can see, `m_vertexData` alternates between vertex positions and normals. 
 
 Backface culling determines the visibility of an object. In other words, one side of the triangle will be visible to the viewer, and the other side of the triangle will be invisible. You can read more about [backface culling here](https://en.wikipedia.org/wiki/Back-face_culling)!
 
-![gif of rotating triangle showing both sides of the triangle](gif file path)
+<p align="center">
+<img src="handout_images/amog-us-among-us.gif" width="300">
+</p>
+
+<!---![gif of rotating triangle showing both sides of the triangle](gif file path)--->
 
 If your triangle is not visible, it’s likely that your points are in the wrong order. Remember, positions and normals have to go in counterclockwise order!
 
@@ -80,7 +84,11 @@ In the Triangle class, fill out the `tessellate_triangle()` function stub. Use t
 
 Your triangle should look like this:
 
-![task1 triangle](triangle screenshot image path)
+<p align="center">
+<img src="handout_images/amog-us-among-us.gif" width="300">
+</p>
+
+<!---![task1 triangle](triangle screenshot image path)--->
 
 ## 2. Cube
 
@@ -106,8 +114,11 @@ makeTile() takes in 3 inputs:
 - `glm::vec3 topRight`
 
 These inputs represent 3D coordinates of the top left, bottom left, bottom right, and top right vertex positions of the tile.
-	
-![example diagram](img path)
+
+<p align="center">
+<img src="handout_images/amog-us-among-us.gif" width="300">
+</p>
+<!---![example diagram](img path)--->
 	
 `makeTile()` returns a vector of floats that holds the positions and normals of the tile, which then can be concatenated to `m_vertexData`. Don’t forget about counter-clockwise order!
 	
@@ -115,7 +126,10 @@ These inputs represent 3D coordinates of the top left, bottom left, bottom right
 
 Your tile should look like this:
 
-![task2 tile](gif path)
+<p align="center">
+<img src="handout_images/amog-us-among-us.gif" width="300">
+</p>
+<!---![task2 tile](gif path)--->
 
 📝 **Task 2.2**
 
@@ -131,7 +145,7 @@ You’ll notice in the `makeFace()` function call, we have provided the coordina
 > Note: Don’t forget that param 1 controls the number of triangles in each row and column!
 
 <details>
-  <summary>🤔Hint: How do I use the `makeTile()` function?</summary>
+  <summary>🤔Hint: How do I use the makeTile() function?</summary>
 	
 The key here is to know what the four points you need to pass into `makeTile()`. Take a look at how parameter 1  affects the tessellation of the plane, and how it changes the intervals of where the vertex positions are located.
 	
@@ -151,7 +165,10 @@ Now that you have one side of the Cube, you should be able to implement all 6 si
 
 Your Cube should now look like this:
 
-![task2.2 cube gif][gif path]
+<p align="center">
+<img src="handout_images/amog-us-among-us.gif" width="300">
+</p>
+<!---![task2.2 cube gif][gif path]--->
 
 ## 3. Sphere
 
@@ -294,6 +311,13 @@ For each orange_slice {
 ```
 	
 </details>
+
+Your sphere should look like this:
+
+<p align="center">
+<img src="handout_images/amog-us-among-us.gif" width="300">
+</p>
+<!---![sphere gif](sphere gif spinning)--->
 
 ## End
 
