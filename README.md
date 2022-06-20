@@ -283,11 +283,13 @@ Your slice should look like this:
 	
 <p align="center">
 	<img src="handout_images/phi_exp.png" width="650">
-	<p align="center">Diagram of 𝜙. Notice the start and end angles of 𝜙!</p>
+	<p align="center">Diagram of 𝜙</p>
 </p>
 	𝜙 = 𝜋 / param1
 	
 Refer to the diagram above to understand the reasoning behind this calculation.
+
+> Notice the start and end angles of 𝜙!
 	
 </details>
 
