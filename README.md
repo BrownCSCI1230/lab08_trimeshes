@@ -95,7 +95,7 @@ Below are other examples of how we can use triangles to make different 3D meshes
 
 📝 **Task 1**
 
-Now that you know everything you need to know about triangles and trimeshes, it's time to create your own!
+Now that you know everything you need to know about triangles and trimeshes, it's time to create your own trimeshes!
 
 You will first draw a triangle. In the Triangle class, fill out the `tessellate_triangle()` function stub. Use the coordinate points 
 - `(-0.5, -0.5, 0)`
