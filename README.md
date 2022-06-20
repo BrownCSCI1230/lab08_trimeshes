@@ -165,7 +165,7 @@ Now that you have your tile, you can create one face of the Cube! In the Cube cl
 - `glm::vec3 bottomRight`: the position of the bottom right vertex of the face
 - `glm::vec3 topRight`: the position of the top right vertex of the face
 	
-`makeFace()` as no outputs
+`makeFace()` as no outputs. You will directly add your points to `m_vertexData` in this function.
 	
 </details>
 
@@ -212,40 +212,37 @@ When you implement Sphere, you will think of the parameters in term of spherical
 > Note: Like Cube, the Sphere is centered at (0, 0, 0) and has a radius of 0.5
 
 <details>
-  <summary>What is the Spherical Coordinate System?</summary>
+  <summary><b>What is the Spherical Coordinate System?</b></summary>
 	
 Remember polar coordinates (*r*, 𝜃) from high school geometry? Spherical coordinates (*r*, 𝜃, 𝜙) are like polar coordinates, but in 3D! The spherical coordinate system specifies a 3D point in space using (*r*, 𝜃, 𝜙). For more details, read this [Wikipedia article on the Spherical Coordinate System](https://en.wikipedia.org/wiki/Spherical_coordinate_system).
 	
-> Note: Pay attention to the direction of the axes and thus what 𝜃 and 𝜙 represent! Our diagram is different from the diagram in the wikipedia article above because we are using the OpenGL Coordinate System (as described in [1.1 OpenGL Coordinate System](#-11-opengls-3d-coordinate-system))!
+> Note: Pay attention to the direction of the axes and thus what 𝜃 and 𝜙 represent! Our diagram is different from the diagram in the wikipedia article above because we are using the OpenGL coordinate system (as described in [1.1 OpenGL Coordinate System](#-11-opengls-3d-coordinate-system))!
 
 | Coordinate | Diagram |
 | :---------------------------------------------------------------: | :---------------------------------------------------------------: |	
 | *r*: the radial distance from the origin. For sphere, `r=0.5` | <img src="handout_images/amog-us-among-us.gif" width="300"> |	
-| 𝜃: the polar angle. For sphere, this is in radians. | <img src="handout_images/curr_next_theta.png" width="650"> |
-| 𝜙: the azimuthal angle. For sphere, this is in radians. | <img src="handout_images/phi_exp.png" width="650"> |
+| 𝜃: the polar angle. For sphere, this is in radians. | <img src="handout_images/amog-us-among-us.gif" width="300"> |
+| 𝜙: the azimuthal angle. For sphere, this is in radians. | <img src="handout_images/amog-us-among-us.gif" width="300"> |
 
 </details>
 
 ### 📌 3.1 Oranges! 🦧🍊🍊🍊
 
-Let’s start by thinking of the sphere as an orange. Oranges are made up of slices and each slice is made up of segments. We can build an orange (aka a sphere) by procedurally generating a collection of orange slices (aka a sphere slice). In the following task, you will implement this orange slice.
-
 <p align="center">
 	<img src="handout_images/orange_slice.png" width="300" margin"auto">
 </p>
 
+As shown above, you can think of a sphere like an orange. Oranges are made up of slices and each slice is made up of segments. We can build an orange (aka a sphere) by procedurally generating a collection of orange slices (aka a sphere slice). In the following task, you will implement this orange slice.
+
 <details>
-  <summary>How does thinking of orange slices relate to this?</summary>
+  <summary>Orange Slices and Segments in Terms of Parameters 1 and 2</summary>
 	
-The number of slices in the orange are controlled by param 2 (which is used to calculate 𝜃). The number of segments are controlled by param 1 (which is used to calculate 𝜙). Using both these parameters, we can determine the exact 3D location of each vertex!
+- Orange Slice: The number of slices in the orange are controlled by parameter 2 (which is used to calculate 𝜃). 
+- Orange Segment: The number of segments are controlled by parameter 1 (which is used to calculate 𝜙). 
+	
+Using both these parameters and knowing that the radius is 0.5, we can determine the exact 3D location of each vertex with spherical coordinates!
 	
 </details>
-
-By using 𝜃 and 𝜙, we can get every vertex position by rotating a vector about the origin. 
-
-> Note: You may find the following useful in your implementation: `glm::radians()`, `glm::sin()`, and `glm::cos()`
-
-> Note: Everything is in radians!
 
 📝 **Task 3.1.1**
 
@@ -255,26 +252,49 @@ Copy your `makeTile()` function from your Cube class into the Sphere class. You 
 
 In the Sphere class, implement a slice of the Sphere in the `make_slice()` function stub. Use your `makeTile()` function that you copied over. This is the most difficult task, so we have provided a few hints below if you get stuck. Try thinking about how you may calculate 𝜙 and how you may use that to generate a slice. Try implementing your ideas, and if you get stuck, you may reveal a hint or ask one of the TA’s for help!
 
+> Note: You may find the following useful in your implementation: `glm::radians()`, `glm::sin()`, and `glm::cos()`
+
+> Note: Everything is in radians!
+
 <details>
-  <summary>What are the `make_slice()` inputs?</summary>
+	<summary><b>What are the make_slice() inputs and outputs?</b></summary>
+
+<p align="center">
+	<img src="handout_images/curr_next_theta.png" width="650">
+	<p align="center">Diagram of currentTheta and nextTheta</p>
+</p>
 	
-You’ll notice that the inputs of the `make_slice()` function are `currentTheta` and `nextTheta`. `currentTheta` is the 𝜃 of all the vertices on the left side of the slice, and `nextTheta` is the 𝜃 of all the vertices on the right side of the slice. 
+`make_slice()` inputs:
+- `currentTheta`: the 𝜃 of all the vertices on the left side of the slice
+- `nextTheta`: the 𝜃 of all the vertices on the right side of the slice.
+	
+`make_slice()` has no outputs. You will directly add your points to `m_vertexData` in this function.
 
 </details>
+
+Your slice should look like this:
+<p align="center">
+	<img src="handout_images/amog-us-among-us.gif" width="300">
+</p>
+<!---![slice gif](slice gif spinning)--->
 
 <details>
   <summary>🤔Hint: How do I calculate 𝜙?</summary>
 	
+<p align="center">
+	<img src="handout_images/phi_exp.png" width="650">
+	<p align="center">Diagram of 𝜙</p>
+</p>
 	𝜙 = 𝜋 / param1
 	
-Refer to the diagram in section 3 to understand the reasoning behind this calculation. 
+Refer to the diagram above to understand the reasoning behind this calculation. 
 	
 </details>
 
 <details>
   <summary>🤔Hint: How do I use 𝜃 and 𝜙 to calculate my four points for makeTile()?</summary>
 	
-**Note:** The start and end angles of 𝜙!
+> Note: Notice the start and end angles of 𝜙!
 
 You can get the 3D position using the following equations:
 
@@ -319,15 +339,24 @@ For each segment {
 	
 </details>
 
-Your slice should look like this:
+📝 **Task 3.2**
+
+Once you have finished making a singular slice of the orange, it’s time to make the whole orange! Implement the `make_orange()` function stub in the Sphere class.
+
+<details>
+	<summary><b>What are the make_orange() inputs and outputs?</b></summary>
+	
+- `make_orange()` has no inputs.
+- `make_orange()` has no outputs. You will directly add your points to `m_vertexData` in this function.
+	
+</details>
+
+Your sphere should look like this:
+
 <p align="center">
 <img src="handout_images/amog-us-among-us.gif" width="300">
 </p>
-<!---![slice gif](slice gif spinning)--->
-
-📝 **Task 3.2**
-
-Once you have finished making a singular slice of the orange, it’s time to make the whole orange! Implement the `make_orange()` function stub in the Sphere class. 
+<!---![sphere gif](sphere gif spinning)--->
 
 <details>
 	<summary>🤔Hint: Pseudocode</summary>
@@ -343,13 +372,6 @@ For each orange_slice {
 ```
 	
 </details>
-
-Your sphere should look like this:
-
-<p align="center">
-<img src="handout_images/amog-us-among-us.gif" width="300">
-</p>
-<!---![sphere gif](sphere gif spinning)--->
 
 ## End
 
