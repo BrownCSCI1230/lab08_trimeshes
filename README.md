@@ -89,7 +89,7 @@ Now it’s time to start creating the primitives 🤗😇😎. Each primitive is
 You’ll notice that there are sliders on the left side of the screen that control the shape parameters. These parameters control the number of triangles used to tessellate each face of the Cube. 
 
 <p align="center">
-	<img src="handout_images/cube_parameters.png" width="650" margin"auto">
+	<img src="handout_images/cube_parameters.jpeg" width="650" margin"auto">
 </p>
 
 📝 **Task 2.1**
@@ -140,7 +140,7 @@ The key here is to know what the four points you need to pass into `makeTile()`.
 You should end up with something that looks like this:
 
 <p align="center">
-	<img src="make_tile.png" width="650" margin"auto">
+<img src="handout_images/make_tile.png" width="500" margin"auto">
 </p>
 
 You will use what you write here to generate all six sides of the Cube for the next task.
