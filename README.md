@@ -97,7 +97,12 @@ Below are other examples of how we can use triangles to make different 3D meshes
 
 Now that you know everything you need to know about triangles and trimeshes, it's time to create your own!
 
-You will first draw a triangle. In the Triangle class, fill out the `tessellate_triangle()` function stub. Use the coordinate points (-0.5, -0.5, 0), (0.5, -0.5, 0), (0, 0.5, 0). Don’t forget the normals!
+You will first draw a triangle. In the Triangle class, fill out the `tessellate_triangle()` function stub. Use the coordinate points 
+- `(-0.5, -0.5, 0)`
+- `(0.5, -0.5, 0)`
+- `(0, 0.5, 0)`
+
+Don’t forget the normals!
 
 Your triangle should look like this:
 
@@ -122,21 +127,21 @@ As shown below, you’ll notice that there are sliders on the left side of the s
 
 To create our Cube, you'll first create a tile comprised of two triangles as shown below. In the Cube class, implement the `makeTile()` function stub. This function generates a plane composed of two triangles. Don’t forget the normals!
 
-<details>
-  <summary><b>What are the makeTile() inputs and outputs?</b></summary>
+<details><summary><b>What are the makeTile() inputs and outputs?</b></summary>
 	
-makeTile() takes in 3 inputs:
+<p align="center">
+	<img src="handout_images/make_tile.png" width="500" margin"auto">
+	<p align="center">Diagram of makeTile() and its Inputs</p>
+</p>
+
+As shown above, `makeTile()` takes in 4 inputs:
 - `glm::vec3 topLeft`: the position of the top left vertex
 - `glm::vec3 bottomLeft`: the position of the bottom left vertex
 - `glm::vec3 bottomRight`: the position of the bottom right vertex
 - `glm::vec3 topRight`: the position of the top right vertex
-
-<p align="center">
-<img src="handout_images/amog-us-among-us.gif" width="300">
-</p>
-<!---![example diagram](img path)--->
 	
-`makeTile()` returns a vector of floats that holds the positions and normals of the tile, which then can be concatenated to `m_vertexData`. Don’t forget about counter-clockwise order!
+`makeTile()` outputs:
+- `std::vector<float>`: This vector contains the positions and normals of the tile, which then can be concatenated to `m_vertexData`
 	
 </details>
 
@@ -149,31 +154,36 @@ Your tile should look like this:
 
 📝 **Task 2.2**
 
-In the Cube class, implement the positive x side of the Cube in the `makeFace()` function stub. Use the `makeTile()` function you wrote in Task 2.1. 
+Now that you have your tile, you can create one face of the Cube! In the Cube class, implement the positive x side of the Cube in the `makeFace()` function stub. The face should tesselate differently depending on parameter 1. Use the `makeTile()` function you wrote in Task 2.1.
 
 <details>
-  <summary>What are the makeFace() inputs?</summary>
+  <summary><b>What are the makeFace() inputs and outputs?</b></summary>
+	  
+`makeFace()` takes in 4 inputs:
+- `glm::vec3 topLeft`: the position of the top left vertex of the face
+- `glm::vec3 bottomLeft`: the position of the bottom left vertex of the face
+- `glm::vec3 bottomRight`: the position of the bottom right vertex of the face
+- `glm::vec3 topRight`: the position of the top right vertex of the face
 	
-You’ll notice in the `makeFace()` function call, we have provided the coordinates of the 4 corners of the positive x face. Refer to the stencil code for more information about the inputs to the `makeFace()` function.
+`makeFace()` as no outputs
 	
 </details>
 
-> Note: Don’t forget that param 1 controls the number of triangles in each row and column!
-
-<details>
-  <summary>🤔Hint: How do I use the makeTile() function?</summary>
-	
-The key here is to know what the four points you need to pass into `makeTile()`. Take a look at how parameter 1  affects the tessellation of the plane, and how it changes the intervals of where the vertex positions are located.
-	
-</details>
+> Note: Don’t forget that parameter 1 controls the number of triangles in each row and column!
 
 You should end up with something that looks like this:
 
 <p align="center">
-<img src="handout_images/make_tile.png" width="500" margin"auto">
+<img src="handout_images/amog-us-among-us.gif" width="300">
 </p>
-
-You will use what you write here to generate all six sides of the Cube for the next task.
+<!---![makeFace() showing the face with the parameters changing](gif path)--->
+	
+<details>
+  <summary>🤔Hint: How do I use the makeTile() function?</summary>
+	
+The key here is to know what the four points you need to pass into `makeTile()`. Take a look at how parameter 1 affects the tessellation of the face, and how it changes the intervals of where the vertex positions are located.
+	
+</details>
 
 📝 **Task 2.3**
 
@@ -190,29 +200,29 @@ Your Cube should now look like this:
 
 Yay! Congratulations on making your Cube! 🙌 It’s to time to make a Sphere 🥳🎉 This is a wee bit more complicated, but don’t worry we’ll walk you through it!
 
-The shape parameters for Sphere are slightly different than Cube. The first parameter controls the number of ‘layers’ in the vertical direction, and the second parameter controls the number of ‘layers’ in the horizontal direction, as shown below. You can also think about this in terms of latitude and longitude -- param 1 controls latitude, and param 2 controls longitude. In term of spherical coordinates, parameter 1 controls 𝜙 and parameter 2 controls 𝜃.
-
-<details>
-  <summary>How Parameters 1 and 2 Affects Sphere Diagram</summary>
-
 <p align="center">
-<img src="handout_images/sphere_params.png" width="650" margin"auto">
+	<img src="handout_images/sphere_params.png" width="650" margin"auto">
+	<p align="center"> Sphere Parameter Controls </p>
 </p>
 	
-</details>
+As shown above, the shape parameters for Sphere are slightly different than Cube. The first parameter controls the number of ‘layers’ in the vertical direction (like latitude), and the second parameter controls the number of ‘layers’ in the horizontal direction (like longitude).
+
+When you implement Sphere, you will think of the parameters in term of spherical coordinates: parameter 1 controls 𝜙 and parameter 2 controls 𝜃.
+	  
+> Note: Like Cube, the Sphere is centered at (0, 0, 0) and has a radius of 0.5
 
 <details>
-  <summary>Spherical Coordinates Diagram</summary>
-
-<p align="center">
-<img src="handout_images/curr_next_theta.png" width="650" margin"auto">
-</p>
-
-<p align="center">
-<img src="handout_images/phi_exp.png" width="650" margin"auto">
-</p>
+  <summary>What is the Spherical Coordinate System?</summary>
 	
-Remember polar coordinates (*r*, 𝜃) from high school geometry? Spherical coordinates (*r*, 𝜃, 𝜙) are like polar coordinates, but in 3D! Read this [Wikipedia article on the Spherical Coordinate System](https://en.wikipedia.org/wiki/Spherical_coordinate_system) if you need a refresher!
+Remember polar coordinates (*r*, 𝜃) from high school geometry? Spherical coordinates (*r*, 𝜃, 𝜙) are like polar coordinates, but in 3D! The spherical coordinate system specifies a 3D point in space using (*r*, 𝜃, 𝜙). For more details, read this [Wikipedia article on the Spherical Coordinate System](https://en.wikipedia.org/wiki/Spherical_coordinate_system).
+	
+> Note: Pay attention to the direction of the axes and thus what 𝜃 and 𝜙 represent! Our diagram is different from the diagram in the wikipedia article above because we are using the OpenGL Coordinate System (as described in [1.1 OpenGL Coordinate System](#-11-opengls-3d-coordinate-system))!
+
+| Coordinate | Diagram |
+| :---------------------------------------------------------------: | :---------------------------------------------------------------: |	
+| *r*: the radial distance from the origin. For sphere, `r=0.5` | <img src="handout_images/amog-us-among-us.gif" width="300"> |	
+| 𝜃: the polar angle. For sphere, this is in radians. | <img src="handout_images/curr_next_theta.png" width="650"> |
+| 𝜙: the azimuthal angle. For sphere, this is in radians. | <img src="handout_images/phi_exp.png" width="650"> |
 
 </details>
 
