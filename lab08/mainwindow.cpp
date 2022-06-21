@@ -12,26 +12,20 @@ MainWindow::MainWindow()
     // Create glWidget for OpenGL stuff
     glWidget = new GLWidget;
 
-    // Create QWidget for sidebar toggle stuff
-    QWidget *sidebar = new QWidget;
-
     /* Set up the layouts (parent-child diagram):
      *
      *                 hLayout
      *                 /     \
-     *          vLayout       glWidget (canvas)
-     *             |
-     *        sidebar (toolbar)
-     *            |
-     *     labels,sliders,buttons,...
-     *       |
-     *     p1Layout, p2Layout
+     *           vLayout      glWidget (canvas)
+     *          |      \
+     * labels,buttons   \
+     *                   \
+     *             p1Layout,p2Layout (sliders/spinboxes)
      *
      */
     QHBoxLayout *hLayout = new QHBoxLayout(); // horizontal alignment
     QVBoxLayout *vLayout = new QVBoxLayout(); // vertical alignment
     vLayout->setAlignment(Qt::AlignTop);
-    vLayout->addWidget(sidebar);
     hLayout->addLayout(vLayout);
     hLayout->addWidget(glWidget, 1);
     this->setLayout(hLayout);
@@ -40,27 +34,27 @@ MainWindow::MainWindow()
     QFont font;
     font.setPointSize(16);
     font.setBold(true);
-    QLabel *trimesh_label = new QLabel(sidebar); // Trimeshes label
+    QLabel *trimesh_label = new QLabel(); // Trimeshes label
     trimesh_label->setText("Trimeshes");
     trimesh_label->setFont(font);
-    QLabel *params_label = new QLabel(sidebar); // Parameters label
+    QLabel *params_label = new QLabel(); // Parameters label
     params_label->setText("Parameters");
     params_label->setFont(font);
-    QLabel *param1_label = new QLabel(sidebar); // Parameter 1 label
+    QLabel *param1_label = new QLabel(); // Parameter 1 label
     param1_label->setText("Parameter 1:");
-    QLabel *param2_label = new QLabel(sidebar); // Parameter 2 label
+    QLabel *param2_label = new QLabel(); // Parameter 2 label
     param2_label->setText("Parameter 2:");
-    QLabel *width_spacer = new QLabel(sidebar); // cheat-y way of adding more width to the QVBoxLayout
+    QLabel *width_spacer = new QLabel(); // cheat-y way of adding more width to the QVBoxLayout
     width_spacer->setText("                                               ");
     width_spacer->setFont(font);
 
-    // Create checkbox controls to toggle Cube and Sphere
-    QRadioButton *triangleCB = new QRadioButton(sidebar); // Triangle button
+    // Create button controls to toggle Cube and Sphere
+    QRadioButton *triangleCB = new QRadioButton(); // Triangle button
     triangleCB->setText(QStringLiteral("Triangle"));
     triangleCB->setChecked(true); // Default Triangle toggled
-    QRadioButton *cubeCB = new QRadioButton(sidebar); // Cube button
+    QRadioButton *cubeCB = new QRadioButton(); // Cube button
     cubeCB->setText(QStringLiteral("Cube"));
-    QRadioButton *sphereCB = new QRadioButton(sidebar); // Sphere button
+    QRadioButton *sphereCB = new QRadioButton(); // Sphere button
     sphereCB->setText(QStringLiteral("Sphere"));
 
     // Creates the boxes containing the parameter sliders and number boxes
@@ -70,7 +64,7 @@ MainWindow::MainWindow()
     QHBoxLayout *l2 = new QHBoxLayout();
 
     // Create slider controls to control parameters
-    p1Slider = new QSlider(Qt::Orientation::Horizontal, sidebar); // Parameter 1 slider
+    p1Slider = new QSlider(Qt::Orientation::Horizontal); // Parameter 1 slider
     p1Slider->setTickInterval(1);
     p1Slider->setMinimum(0); // TODO: Maybe change the minimum depending if Cube or Sphere is selected
     p1Slider->setMaximum(50);
@@ -80,7 +74,7 @@ MainWindow::MainWindow()
     p1Box->setMaximum(50);
     p1Box->setSingleStep(1);
 
-    p2Slider = new QSlider(Qt::Orientation::Horizontal, sidebar); // Parameter 2 slider
+    p2Slider = new QSlider(Qt::Orientation::Horizontal); // Parameter 2 slider
     p2Slider->setTickInterval(1);
     p2Slider->setMinimum(0); // TODO: Maybe change the minimum depending if Cube or Sphere is selected
     p2Slider->setMaximum(50);
