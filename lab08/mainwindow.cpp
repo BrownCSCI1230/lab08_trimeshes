@@ -5,7 +5,7 @@
 
 #include <QLabel>
 #include <QRadioButton>
-#include <QSlider>
+#include <QGroupBox>
 
 MainWindow::MainWindow()
 {
@@ -24,6 +24,8 @@ MainWindow::MainWindow()
      *        sidebar (toolbar)
      *            |
      *     labels,sliders,buttons,...
+     *       |
+     *     p1Layout, p2Layout
      *
      */
     QHBoxLayout *hLayout = new QHBoxLayout(); // horizontal alignment
@@ -61,15 +63,41 @@ MainWindow::MainWindow()
     QRadioButton *sphereCB = new QRadioButton(sidebar); // Sphere button
     sphereCB->setText(QStringLiteral("Sphere"));
 
+    // Creates the boxes containing the parameter sliders and number boxes
+    QGroupBox *p1Layout = new QGroupBox(); // horizonal slider 1 alignment
+    QHBoxLayout *l1 = new QHBoxLayout();
+    QGroupBox *p2Layout = new QGroupBox(); // horizonal slider 2 alignment
+    QHBoxLayout *l2 = new QHBoxLayout();
+
     // Create slider controls to control parameters
-    QSlider *param1 = new QSlider(Qt::Orientation::Horizontal, sidebar); // Parameter 1 slider
-    param1->setTickInterval(1);
-    param1->setMinimum(0); // TODO: Maybe change the minimum depending if Cube or Sphere is selected
-    param1->setMaximum(50);
-    QSlider *param2 = new QSlider(Qt::Orientation::Horizontal, sidebar); // Parameter 2 slider
-    param1->setTickInterval(1);
-    param1->setMinimum(0); // TODO: Maybe change the minimum depending if Cube or Sphere is selected
-    param1->setMaximum(50);
+    p1Slider = new QSlider(Qt::Orientation::Horizontal, sidebar); // Parameter 1 slider
+    p1Slider->setTickInterval(1);
+    p1Slider->setMinimum(0); // TODO: Maybe change the minimum depending if Cube or Sphere is selected
+    p1Slider->setMaximum(50);
+
+    p1Box = new QSpinBox();
+    p1Box->setMinimum(0);
+    p1Box->setMaximum(50);
+    p1Box->setSingleStep(1);
+
+    p2Slider = new QSlider(Qt::Orientation::Horizontal, sidebar); // Parameter 2 slider
+    p2Slider->setTickInterval(1);
+    p2Slider->setMinimum(0); // TODO: Maybe change the minimum depending if Cube or Sphere is selected
+    p2Slider->setMaximum(50);
+
+    p2Box = new QSpinBox();
+    p2Box->setMinimum(0);
+    p2Box->setMaximum(50);
+    p2Box->setSingleStep(1);
+
+    // Adds the slider and number box to the parameter layouts
+    l1->addWidget(p1Slider);
+    l1->addWidget(p1Box);
+    p1Layout->setLayout(l1);
+
+    l2->addWidget(p2Slider);
+    l2->addWidget(p2Box);
+    p2Layout->setLayout(l2);
 
     // Add the labels and checkbox widgets to vLayout for vertical alignment (order matters!)
     vLayout->addWidget(trimesh_label);
@@ -79,10 +107,58 @@ MainWindow::MainWindow()
     vLayout->addWidget(width_spacer);
     vLayout->addWidget(params_label);
     vLayout->addWidget(param1_label);
-    vLayout->addWidget(param1);
+    vLayout->addWidget(p1Layout);
     vLayout->addWidget(param2_label);
-    vLayout->addWidget(param2);
+    vLayout->addWidget(p2Layout);
 
+    // Connects the sliders and number boxes for the parameters
+    connectParam1();
+    connectParam2();
+
+}
+
+void MainWindow::connectParam1()
+{
+    connect(p1Slider, &QSlider::valueChanged, this, &MainWindow::onValChangeP1);
+    connect(p1Box, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+            this, &MainWindow::onValChangeP1);
+}
+
+void MainWindow::disconnectParam1()
+{
+    disconnect(p1Slider, &QSlider::valueChanged, this, &MainWindow::onValChangeP1);
+    disconnect(p1Box, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+            this, &MainWindow::onValChangeP1);
+}
+
+void MainWindow::onValChangeP1(int newValue)
+{
+    disconnectParam1();
+    p1Slider->setValue(newValue);
+    p1Box->setValue(newValue);
+    connectParam1();
+}
+
+void MainWindow::connectParam2()
+{
+    connect(p2Slider, &QSlider::valueChanged, this, &MainWindow::onValChangeP2);
+    connect(p2Box, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+            this, &MainWindow::onValChangeP1);
+}
+
+void MainWindow::disconnectParam2()
+{
+    disconnect(p2Slider, &QSlider::valueChanged, this, &MainWindow::onValChangeP2);
+    disconnect(p2Box, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),
+            this, &MainWindow::onValChangeP1);
+}
+
+void MainWindow::onValChangeP2(int newValue)
+{
+    disconnectParam2();
+    p2Slider->setValue(newValue);
+    p2Box->setValue(newValue);
+    connectParam2();
 }
 
 MainWindow::~MainWindow()
