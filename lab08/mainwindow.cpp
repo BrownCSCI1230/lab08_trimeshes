@@ -11,6 +11,7 @@ MainWindow::MainWindow()
 {
     // Create glWidget for OpenGL stuff
     glWidget = new GLWidget;
+    glWidget->setEnabled(true); // specifically allow handling of keyboard and mouse events
 
     /* Set up the layouts (parent-child diagram):
      *
@@ -137,14 +138,14 @@ void MainWindow::connectParam2()
 {
     connect(p2Slider, &QSlider::valueChanged, this, &MainWindow::onValChangeP2);
     connect(p2Box, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),
-            this, &MainWindow::onValChangeP1);
+            this, &MainWindow::onValChangeP2);
 }
 
 void MainWindow::disconnectParam2()
 {
     disconnect(p2Slider, &QSlider::valueChanged, this, &MainWindow::onValChangeP2);
     disconnect(p2Box, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),
-            this, &MainWindow::onValChangeP1);
+            this, &MainWindow::onValChangeP2);
 }
 
 void MainWindow::onValChangeP2(int newValue)

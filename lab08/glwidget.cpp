@@ -44,12 +44,12 @@ static const char *fragmentShaderSourceCore =
     "out highp vec4 fragColor;\n"
     "uniform highp vec3 lightPos;\n"
     "void main() {\n"
-    "   //highp vec3 L = normalize(lightPos - vert);\n"
-    "   //highp float NL = max(dot(normalize(vertNormal), L), 0.0);\n"
-    "   //highp vec3 color = vec3(0.39, 1.0, 0.0);\n"
-    "   //highp vec3 col = clamp(color * 0.2 + color * 0.8 * NL, 0.0, 1.0);\n"
-    "   //fragColor = vec4(col, 1.0);\n"
-    "   fragColor = vec4(1.0);\n"
+    "   highp vec3 L = normalize(lightPos - vert);\n"
+    "   highp float NL = max(dot(normalize(vertNormal), L), 0.0);\n"
+    "   highp vec3 color = vec3(1.0, 0.78, 0.0);\n"
+    "   highp vec3 col = clamp(color * 0.2 + color * 0.8 * NL, 0.0, 1.0);\n"
+    "   fragColor = vec4(col, 1.0);\n"
+    "   //fragColor = vec4(1.0);\n"
     "}\n";
 
 void GLWidget::initializeGL()
@@ -91,8 +91,10 @@ void GLWidget::initializeGL()
                              reinterpret_cast<void *>(3 * sizeof(GLfloat)));
     m_logoVbo.release();
 
+    // Camera stuff (facing -z direction positioned at (0, 0, -5))
+    // m_camera is the model-view matrix. The projection matrix is separately tracked as m_proj
     m_camera.setToIdentity();
-    m_camera.translate(0, 0, -2);
+    m_camera.translate(0, 0, -5);
 
     m_program->setUniformValue(m_lightPosLoc, QVector3D(0, 0, 70));
 
@@ -123,4 +125,35 @@ void GLWidget::resizeGL(int w, int h)
 {
     m_proj.setToIdentity();
     m_proj.perspective(45.0f, GLfloat(w) / h, 0.01f, 100.0f);
+}
+
+
+/* -----------------------------------------------
+ *   Mouse Events for Orbital Camera stuff below
+ * -----------------------------------------------
+*/
+
+void GLWidget::mousePressEvent(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton || event->button() == Qt::RightButton) {
+        m_oldXY = event->position();
+        m_isDragging = true;
+        update(); // updates widget
+    }
+}
+
+void GLWidget::mouseReleaseEvent(QMouseEvent *event) {
+    if (m_isDragging && (event->button() == Qt::LeftButton || event->button() == Qt::RightButton)) {
+        m_isDragging = false;
+        update(); // updates widget
+    }
+}
+
+void GLWidget::mouseMoveEvent(QMouseEvent *event) {
+    if (m_isDragging) {
+        QPointF dxdy = event->position() - m_oldXY;
+        m_camera(0,3) += (dxdy.x() * 0.01);
+        m_camera(1,3) -= (dxdy.y() * 0.01);
+        m_oldXY = event->position();
+        update(); // updates widget
+    }
 }
