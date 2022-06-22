@@ -1,10 +1,11 @@
 #include "mainwindow.h"
+#include "Settings.h"
+#include "ui/Settings.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 
 #include <QLabel>
-#include <QRadioButton>
 #include <QGroupBox>
 
 MainWindow::MainWindow()
@@ -55,12 +56,12 @@ MainWindow::MainWindow()
     width_spacer->setFont(font);
 
     // Create checkbox controls to toggle Cube and Sphere
-    QRadioButton *triangleCB = new QRadioButton(sidebar); // Triangle button
+    triangleCB = new QRadioButton(sidebar); // Triangle button
     triangleCB->setText(QStringLiteral("Triangle"));
     triangleCB->setChecked(true); // Default Triangle toggled
-    QRadioButton *cubeCB = new QRadioButton(sidebar); // Cube button
+    cubeCB = new QRadioButton(sidebar); // Cube button
     cubeCB->setText(QStringLiteral("Cube"));
-    QRadioButton *sphereCB = new QRadioButton(sidebar); // Sphere button
+    sphereCB = new QRadioButton(sidebar); // Sphere button
     sphereCB->setText(QStringLiteral("Sphere"));
 
     // Creates the boxes containing the parameter sliders and number boxes
@@ -115,8 +116,12 @@ MainWindow::MainWindow()
     connectParam1();
     connectParam2();
 
+    connectTriangle();
+    connectCube();
+    connectSphere();
 }
 
+//******************************** Handles Parameter 1 UI Changes ********************************//
 void MainWindow::connectParam1()
 {
     connect(p1Slider, &QSlider::valueChanged, this, &MainWindow::onValChangeP1);
@@ -136,21 +141,23 @@ void MainWindow::onValChangeP1(int newValue)
     disconnectParam1();
     p1Slider->setValue(newValue);
     p1Box->setValue(newValue);
+    settings.shapeParameter1 = p1Slider->value();
     connectParam1();
 }
 
+//******************************** Handles Parameter 2 UI Changes ********************************//
 void MainWindow::connectParam2()
 {
     connect(p2Slider, &QSlider::valueChanged, this, &MainWindow::onValChangeP2);
     connect(p2Box, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),
-            this, &MainWindow::onValChangeP1);
+            this, &MainWindow::onValChangeP2);
 }
 
 void MainWindow::disconnectParam2()
 {
     disconnect(p2Slider, &QSlider::valueChanged, this, &MainWindow::onValChangeP2);
     disconnect(p2Box, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),
-            this, &MainWindow::onValChangeP1);
+            this, &MainWindow::onValChangeP2);
 }
 
 void MainWindow::onValChangeP2(int newValue)
@@ -158,8 +165,66 @@ void MainWindow::onValChangeP2(int newValue)
     disconnectParam2();
     p2Slider->setValue(newValue);
     p2Box->setValue(newValue);
+    settings.shapeParameter2 = p2Slider->value();
     connectParam2();
 }
+
+//******************************** Handles Shape Type UI Changes ********************************//
+
+// triangle
+void MainWindow::connectTriangle()
+{
+    connect(triangleCB, &QRadioButton::clicked, this, &MainWindow::onTriChange);
+}
+
+void MainWindow::disconnectTriangle()
+{
+    disconnect(triangleCB, &QRadioButton::clicked, this, &MainWindow::onTriChange);
+}
+
+void MainWindow::onTriChange()
+{
+    disconnectTriangle();
+    settings.shapeType = SHAPE_TRIANGLE;
+    connectTriangle();
+}
+
+// cube
+void MainWindow::connectCube()
+{
+    connect(cubeCB, &QRadioButton::clicked, this, &MainWindow::onCubeChange);
+}
+
+void MainWindow::disconnectCube()
+{
+    disconnect(cubeCB, &QRadioButton::clicked, this, &MainWindow::onCubeChange);
+}
+
+void MainWindow::onCubeChange()
+{
+    disconnectCube();
+    settings.shapeType = SHAPE_CUBE;
+    connectCube();
+}
+
+// sphere
+void MainWindow::connectSphere()
+{
+    connect(sphereCB, &QRadioButton::clicked, this, &MainWindow::onSphereChange);
+}
+
+void MainWindow::disconnectSphere()
+{
+    disconnect(sphereCB, &QRadioButton::clicked, this, &MainWindow::onSphereChange);
+}
+
+void MainWindow::onSphereChange()
+{
+    disconnectSphere();
+    settings.shapeType = SHAPE_SPHERE;
+    connectSphere();
+}
+
 
 MainWindow::~MainWindow()
 {

@@ -8,11 +8,13 @@ CONFIG += c++20
 
 HEADERS += \
     OpenGLShape.h \
+    Settings.h \
     glwidget.h \
     mainwindow.h
 
 SOURCES += \
     OpenGLShape.cpp \
+    Settings.cpp \
     glwidget.cpp \
     main.cpp \
     mainwindow.cpp
