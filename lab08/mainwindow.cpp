@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "Settings.h"
-#include "ui/Settings.h"
 
 #include <QHBoxLayout>
 #include <QVBoxLayout>
