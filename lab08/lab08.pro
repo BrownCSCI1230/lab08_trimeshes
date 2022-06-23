@@ -7,14 +7,18 @@ CONFIG += c++20
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 HEADERS += \
-    OpenGLShape.h \
     Settings.h \
+    Shapes/Cube.h \
+    Shapes/OpenGLShape.h \
+    Shapes/Triangle.h \
     glwidget.h \
     mainwindow.h
 
 SOURCES += \
-    OpenGLShape.cpp \
     Settings.cpp \
+    Shapes/Cube.cpp \
+    Shapes/OpenGLShape.cpp \
+    Shapes/Triangle.cpp \
     glwidget.cpp \
     main.cpp \
     mainwindow.cpp

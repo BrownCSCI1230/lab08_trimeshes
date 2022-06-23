@@ -1,12 +1,18 @@
 #include "glwidget.h"
-#include "OpenGLShape.h"
+#include "Settings.h"
+#include "Shapes/Triangle.h"
+#include "Shapes/Cube.h"
+#include <glm/gtc/matrix_transform.hpp>
+
 #include <QOpenGLShaderProgram>
 #include <QCoreApplication>
 #include <math.h>
 #include <iostream>
 
 GLWidget::GLWidget(QWidget *parent)
-    : QOpenGLWidget(parent)
+    : QOpenGLWidget(parent),
+      m_currShape(SHAPE_TRIANGLE),
+      m_shape(std::unique_ptr<Triangle>(new Triangle))
 {
     std::cout<<"GLWIDGET CONSTRUCTOR"<<std::endl;
 }
@@ -74,10 +80,22 @@ void GLWidget::initializeGL()
     m_vao.create();
     m_vao.bind();
 
+    bindVbo();
+
+    // Camera stuff (facing -z direction positioned at (0, 0, -5))
+    // m_camera is the model-view matrix. The projection matrix is separately tracked as m_proj
+     m_camera.setToIdentity();
+     m_camera.translate(0, 0, -5);
+
+    m_program->setUniformValue(m_lightPosLoc, QVector3D(0, 0, 70));
+
+    m_program->release();
+}
+
+void GLWidget::bindVbo()
+{
     // Create the OpenGLShape and get its vertices and normals
-    OpenGLShape *shape = new OpenGLShape();
-    std::vector<GLfloat> verts = shape->generateShape();
-    delete(shape);
+    std::vector<GLfloat> verts = m_shape->generateShape();
 
     m_logoVbo.create();
     m_logoVbo.bind();
@@ -90,15 +108,6 @@ void GLWidget::initializeGL()
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat),
                              reinterpret_cast<void *>(3 * sizeof(GLfloat)));
     m_logoVbo.release();
-
-    // Camera stuff (facing -z direction positioned at (0, 0, -5))
-    // m_camera is the model-view matrix. The projection matrix is separately tracked as m_proj
-    m_camera.setToIdentity();
-    m_camera.translate(0, 0, -5);
-
-    m_program->setUniformValue(m_lightPosLoc, QVector3D(0, 0, 70));
-
-    m_program->release();
 }
 
 void GLWidget::paintGL()
@@ -116,7 +125,11 @@ void GLWidget::paintGL()
     QMatrix3x3 normalMatrix = m_world.normalMatrix();
     m_program->setUniformValue(m_normalMatrixLoc, normalMatrix);
 
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    if (m_currShape == SHAPE_TRIANGLE) {
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+    } else if (m_currShape == SHAPE_CUBE) {
+        glDrawArrays(GL_TRIANGLES, 0, 12);
+    }
 
     m_program->release();
 }
@@ -155,5 +168,31 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event) {
         m_camera(1,3) -= (dxdy.y() * 0.01);
         m_oldXY = event->position();
         update(); // updates widget
+    }
+}
+
+/* -----------------------------------------------
+ *   Settings Change below
+ * -----------------------------------------------
+*/
+void GLWidget::settingsChanged()
+{
+    UiSettingsChanged();
+    bindVbo();
+    update();
+}
+
+void GLWidget::UiSettingsChanged()
+{
+    if (settings.shapeType != m_currShape) {
+        if (settings.shapeType == SHAPE_TRIANGLE) {
+            m_shape = std::make_unique<Triangle>();
+            m_currShape = SHAPE_TRIANGLE;
+        } else if (settings.shapeType == SHAPE_CUBE) {
+            m_shape = std::make_unique<Cube>();
+            m_currShape = SHAPE_CUBE;
+        } else if (settings.shapeType == SHAPE_SPHERE) {
+//            m_shape = std::make_unique<Sphere>(settings.shapeParameter1, settings.shapeParameter2);
+        }
     }
 }

@@ -6,6 +6,8 @@
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
 #include <QMatrix4x4>
+#include <glm/glm.hpp>
+#include "Shapes/OpenGLShape.h"
 
 #include <QMouseEvent>
 
@@ -17,6 +19,8 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 public:
     GLWidget(QWidget *parent = nullptr); // QWidget is the base class for all user interface objects
     ~GLWidget();
+
+    virtual void settingsChanged();
 
 protected:
     void initializeGL() override;
@@ -47,6 +51,13 @@ private:
     QMatrix4x4 m_camera;
     QMatrix4x4 m_world;
     static bool m_transparent;
+
+    void bindVbo();
+
+    // shapes settings
+    void UiSettingsChanged();
+    int m_currShape;
+    std::unique_ptr<OpenGLShape> m_shape;
 };
 
 #endif // GLWIDGET_H

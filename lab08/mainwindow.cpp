@@ -6,6 +6,7 @@
 
 #include <QLabel>
 #include <QGroupBox>
+#include <iostream>
 
 MainWindow::MainWindow()
 {
@@ -169,7 +170,6 @@ void MainWindow::onValChangeP2(int newValue)
 }
 
 //******************************** Handles Shape Type UI Changes ********************************//
-
 // triangle
 void MainWindow::connectTriangle()
 {
@@ -185,6 +185,7 @@ void MainWindow::onTriChange()
 {
     disconnectTriangle();
     settings.shapeType = SHAPE_TRIANGLE;
+    glWidget->settingsChanged();
     connectTriangle();
 }
 
@@ -203,6 +204,7 @@ void MainWindow::onCubeChange()
 {
     disconnectCube();
     settings.shapeType = SHAPE_CUBE;
+    glWidget->settingsChanged();
     connectCube();
 }
 
@@ -221,6 +223,7 @@ void MainWindow::onSphereChange()
 {
     disconnectSphere();
     settings.shapeType = SHAPE_SPHERE;
+    glWidget->settingsChanged();
     connectSphere();
 }
 
