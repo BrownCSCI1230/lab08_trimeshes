@@ -28,7 +28,6 @@ GLWidget::~GLWidget()
         m_program = nullptr;
         doneCurrent();
     }
-
     if (m_normalsProgram == nullptr) {
         return;
     } else {
@@ -37,7 +36,6 @@ GLWidget::~GLWidget()
         m_normalsProgram = nullptr;
         doneCurrent();
     }
-
     if (m_wireframeProgram == nullptr) {
         return;
     } else {
@@ -67,7 +65,6 @@ static const char *vertexShaderSourceCore =
     "   vertNormal = normalMatrix * normal;\n"
     "   gl_Position = projMatrix * mvMatrix * vertex;\n"
     "}\n";
-
 static const char *fragmentShaderSourceCore =
     "#version 330 core\n"
     "in vec3 vert;\n"
@@ -80,7 +77,6 @@ static const char *fragmentShaderSourceCore =
     "   vec3 color = vec3(1.0, 0.78, 0.0);\n"
     "   vec3 col = clamp(color * 0.2 + color * 0.8 * NL, 0.0, 1.0);\n"
     "   fragColor = vec4(col, 1.0);\n"
-    "   //fragColor = vec4(1.0);\n"
     "}\n";
 
 /**
@@ -98,7 +94,6 @@ static const char *wireframeVertexShaderSourceCore =
     "void main() {\n"
     "   gl_Position = projMatrix * mvMatrix * vertex;\n"
     "}\n";
-
 static const char *wireframeFragmentShaderSourceCore =
     "#version 330 core\n"
     "out vec4 fragColor;\n"
@@ -111,6 +106,7 @@ static const char *wireframeFragmentShaderSourceCore =
  *                  Normals Shaders
  * ==================================================
  */
+/// ~~~ Arrow Body ~~~
 static const char *normalsVertexShaderSourceCore =
     "#version 330 core\n"
     "layout(location = 0) in vec4 vertex;\n"
@@ -120,7 +116,6 @@ static const char *normalsVertexShaderSourceCore =
     "   gl_Position = vertex;\n"
     "   vertNormal = vec4(normal, 0.0);\n"
     "}\n";
-
 static const char *normalsGeometryShaderSourceCore =
     "#version 330 core\n"
     "layout(triangles) in;\n"
@@ -141,32 +136,62 @@ static const char *normalsGeometryShaderSourceCore =
     "       EndPrimitive();\n"
     "   }\n"
     "}\n";
-
 static const char *normalsFragmentShaderSourceCore =
     "#version 330 core\n"
     "out vec4 fragColor;\n"
     "void main() {\n"
-    "    fragColor = vec4(0.0);\n"
-    "    fragColor[3] = 1.0;\n"
+    "    fragColor = vec4(vec3(0.0), 1.0);\n"
     "}\n";
 
+/// ~~~ Arrow Head ~~~
+static const char *normalsTipVertexShaderSourceCore =
+    "#version 330 core\n"
+    "layout(location = 0) in vec4 vertex;\n"
+    "layout(location = 1) in vec3 normal;\n"
+    "out vec4 vertNormal;\n"
+    "void main() {\n"
+    "   gl_Position = vertex;\n"
+    "   vertNormal = vec4(normal, 0.0);\n"
+    "}\n";
+static const char *normalsTipGeometryShaderSourceCore =
+    "#version 330 core\n"
+    "layout(triangles) in;\n"
+    "layout(triangle_strip, max_vertices = 18) out;\n"
+    "uniform mat4 projMatrix;\n"
+    "uniform mat4 mvMatrix;\n"
+    "in vec4 vertNormal[];\n"
+    "const float NORMAL_LINE_LENGTH = 0.1;\n"
+    "const float NORMAL_ARROW_LENGTH = 0.05;\n"
+    "const float NORMAL_ARROW_WIDTH = 0.03;\n"
+    "void main() {\n"
+    "   int i;\n"
+    "   for (i = 0; i < gl_in.length(); i++) {\n"
+    "       vec4 P = projMatrix * mvMatrix * gl_in[i].gl_Position.xyzw;\n"
+    "       vec4 N = projMatrix * mvMatrix * vertNormal[i];\n"
+    "       gl_Position = P + N * (NORMAL_LINE_LENGTH + NORMAL_ARROW_LENGTH);\n"
+    "       EmitVertex();\n"
+    "       vec4 eye = P + N * NORMAL_LINE_LENGTH;\n"
+    "       vec4 axis = normalize(vec4(cross(eye.xyz, N.xyz), 0.0));\n"
+    "       axis.z = 0.f;\n"
+    "       gl_Position = P + N * NORMAL_LINE_LENGTH + axis * NORMAL_ARROW_WIDTH;\n"
+    "       EmitVertex();\n"
+    "       gl_Position = P + N * NORMAL_LINE_LENGTH - axis * NORMAL_ARROW_WIDTH;\n"
+    "       EmitVertex();\n"
+    "       EndPrimitive();\n"
+    "   }\n"
+    "}\n";
+static const char *normalsTipFragmentShaderSourceCore =
+    "#version 330 core\n"
+    "out vec4 fragColor;\n"
+    "void main() {\n"
+    "    fragColor = vec4(vec3(0.0), 1.0);\n"
+    "}\n";
 
 void GLWidget::initializeGL()
 {
     std::cout<<"INITIALIZE GL"<<std::endl;
     initializeOpenGLFunctions();
     glClearColor(103/255.f, 142/255.f, 166/255.f, 1); // set the background color
-
-    // Create Normals shader program
-    m_normalsProgram = new QOpenGLShaderProgram;
-    m_normalsProgram->addShaderFromSourceCode(QOpenGLShader::Vertex, normalsVertexShaderSourceCore);
-    m_normalsProgram->addShaderFromSourceCode(QOpenGLShader::Geometry, normalsGeometryShaderSourceCore);
-    m_normalsProgram->addShaderFromSourceCode(QOpenGLShader::Fragment, normalsFragmentShaderSourceCore);
-    m_normalsProgram->link();
-    m_normalsProgram->bind();
-    m_normal_projLoc = m_normalsProgram->uniformLocation("projMatrix");
-    m_normal_mvLoc = m_normalsProgram->uniformLocation("mvMatrix");
-    m_normalsProgram->release();
 
     // Create Shapes shader program
     m_program = new QOpenGLShaderProgram; // allow OpenGL shader programs to be linked and used
@@ -187,9 +212,30 @@ void GLWidget::initializeGL()
     m_wireframeProgram->addShaderFromSourceCode(QOpenGLShader::Fragment, wireframeFragmentShaderSourceCore);
     m_wireframeProgram->link();
     m_wireframeProgram->bind();
-    m_wireframe_mvLoc = m_wireframeProgram->uniformLocation("mvMatrix");
     m_wireframe_projLoc = m_wireframeProgram->uniformLocation("projMatrix");
+    m_wireframe_mvLoc = m_wireframeProgram->uniformLocation("mvMatrix");
     m_wireframeProgram->release();
+
+    // Create Normals shader program
+    m_normalsProgram = new QOpenGLShaderProgram; // arrow body
+    m_normalsProgram->addShaderFromSourceCode(QOpenGLShader::Vertex, normalsVertexShaderSourceCore);
+    m_normalsProgram->addShaderFromSourceCode(QOpenGLShader::Geometry, normalsGeometryShaderSourceCore);
+    m_normalsProgram->addShaderFromSourceCode(QOpenGLShader::Fragment, normalsFragmentShaderSourceCore);
+    m_normalsProgram->link();
+    m_normalsProgram->bind();
+    m_normal_projLoc = m_normalsProgram->uniformLocation("projMatrix");
+    m_normal_mvLoc = m_normalsProgram->uniformLocation("mvMatrix");
+    m_normalsProgram->release();
+
+    m_normalsTipsProgram = new QOpenGLShaderProgram; // arrow head
+    m_normalsTipsProgram->addShaderFromSourceCode(QOpenGLShader::Vertex, normalsTipVertexShaderSourceCore);
+    m_normalsTipsProgram->addShaderFromSourceCode(QOpenGLShader::Geometry, normalsTipGeometryShaderSourceCore);
+    m_normalsTipsProgram->addShaderFromSourceCode(QOpenGLShader::Fragment, normalsTipFragmentShaderSourceCore);
+    m_normalsTipsProgram->link();
+    m_normalsTipsProgram->bind();
+    m_normalTip_projLoc = m_normalsTipsProgram->uniformLocation("projMatrix");
+    m_normalTip_mvLoc = m_normalsTipsProgram->uniformLocation("mvMatrix");
+    m_normalsTipsProgram->release();
 
     // VAO/VBO stuff
     m_vao.create();
@@ -199,7 +245,7 @@ void GLWidget::initializeGL()
     m_vao.release();
 
     // m_camera is the model-view matrix. The projection matrix is separately tracked as m_proj
-    m_camera = glm::translate(m_camera, glm::vec3(0, 0, -5)); // Camera stuff (facing -z direction)
+    m_camera = glm::translate(m_camera, glm::vec3(0, 0, -5 + m_zoomZ)); // Camera stuff (facing -z direction)
 }
 
 void GLWidget::bindVbo()
@@ -225,8 +271,9 @@ void GLWidget::paintGL()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
-    // Draw 3D shape
     QOpenGLVertexArrayObject::Binder vaoBinder(&m_vao);
+
+    // Draw 3D shape
     m_program->bind();
     m_program->setUniformValue(m_default_projLoc, glmMatToQMat(m_proj));
     m_program->setUniformValue(m_default_mvLoc, glmMatToQMat(m_camera * m_world));
@@ -236,11 +283,17 @@ void GLWidget::paintGL()
     glDrawArrays(GL_TRIANGLES, 0, m_numTriangles);
 
     // Draw normals
-    m_normalsProgram->bind();
+    m_normalsTipsProgram->bind(); // arrow head
+    m_normalsTipsProgram->setUniformValue(m_normalTip_projLoc, glmMatToQMat(m_proj));
+    m_normalsTipsProgram->setUniformValue(m_normalTip_mvLoc, glmMatToQMat(m_camera * m_world));
+    glDrawArrays(GL_TRIANGLES, 0, m_numTriangles);
+
+    m_normalsProgram->bind(); // arrow body
     m_normalsProgram->setUniformValue(m_normal_projLoc, glmMatToQMat(m_proj));
     m_normalsProgram->setUniformValue(m_normal_mvLoc, glmMatToQMat(m_camera * m_world));
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glDrawArrays(GL_TRIANGLES, 0, m_numTriangles);
+
 
     // Draw wireframe
     glEnable(GL_POLYGON_OFFSET_LINE);
@@ -287,12 +340,7 @@ void GLWidget::mouseMoveEvent(QMouseEvent *event) {
         m_oldXY = currPos;
         if (m_angleXY[0] < -90 * m_movementSpeed) m_angleXY[0] = (-90 * m_movementSpeed);
         if (m_angleXY[0] > 90 * m_movementSpeed) m_angleXY[0] = (90 * m_movementSpeed);
-
-        m_camera =
-                glm::translate(glm::vec3(0.0, 0.0, -5.0)) *
-                glm::rotate(glm::radians(m_angleXY[1]), glm::vec3(0.0, 1.0, 0.0)) *
-                glm::rotate(glm::radians(m_angleXY[0]), glm::vec3(1.0, 0.0, 0.0));
-        update();
+        updateView();
     }
 }
 
@@ -301,6 +349,25 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *event) {
         m_isDragging = false;
         update();
     }
+}
+
+void GLWidget::wheelEvent(QWheelEvent *event) {
+    QPoint numPixels = event->pixelDelta();
+    QPoint numDegrees = event->pixelDelta() / 8;
+    if (!numPixels.isNull()) {
+        m_zoomZ *= powf(0.999f, -numPixels.y());
+    } else {
+        m_zoomZ *= powf(0.99f, -numDegrees.y() / 15);
+    }
+    updateView();
+}
+
+void GLWidget::updateView() {
+    m_camera =
+            glm::translate(glm::vec3(0.0, 0.0, -5.0 + m_zoomZ)) *
+            glm::rotate(glm::radians(m_angleXY[1]), glm::vec3(0.0, 1.0, 0.0)) *
+            glm::rotate(glm::radians(m_angleXY[0]), glm::vec3(1.0, 0.0, 0.0));
+    update();
 }
 
 /* -----------------------------------------------
