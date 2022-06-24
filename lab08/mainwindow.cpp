@@ -67,7 +67,7 @@ MainWindow::MainWindow()
     // Create slider controls to control parameters
     p1Slider = new QSlider(Qt::Orientation::Horizontal); // Parameter 1 slider
     p1Slider->setTickInterval(1);
-    p1Slider->setMinimum(0); // TODO: Maybe change the minimum depending if Cube or Sphere is selected
+    p1Slider->setMinimum(1);
     p1Slider->setMaximum(50);
 
     p1Box = new QSpinBox();
@@ -77,7 +77,7 @@ MainWindow::MainWindow()
 
     p2Slider = new QSlider(Qt::Orientation::Horizontal); // Parameter 2 slider
     p2Slider->setTickInterval(1);
-    p2Slider->setMinimum(0); // TODO: Maybe change the minimum depending if Cube or Sphere is selected
+    p2Slider->setMinimum(1);
     p2Slider->setMaximum(50);
 
     p2Box = new QSpinBox();
@@ -181,6 +181,8 @@ void MainWindow::onTriChange()
     disconnectTriangle();
     settings.shapeType = SHAPE_TRIANGLE;
     glWidget->settingsChange();
+    p1Slider->setMinimum(1);
+    p2Slider->setMinimum(1);
     connectTriangle();
 }
 
@@ -200,6 +202,8 @@ void MainWindow::onCubeChange()
     disconnectCube();
     settings.shapeType = SHAPE_CUBE;
     glWidget->settingsChange();
+    p1Slider->setMinimum(1);
+    p2Slider->setMinimum(1);
     connectCube();
 }
 
@@ -219,6 +223,8 @@ void MainWindow::onSphereChange()
     disconnectSphere();
     settings.shapeType = SHAPE_SPHERE;
     glWidget->settingsChange();
+    p1Slider->setMinimum(2);
+    p2Slider->setMinimum(3);
     connectSphere();
 }
 

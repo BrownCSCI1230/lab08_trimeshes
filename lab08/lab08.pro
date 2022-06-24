@@ -12,6 +12,7 @@ HEADERS += \
     mainwindow.h \
     shapes/Cube.h \
     shapes/OpenGLShape.h \
+    shapes/Sphere.h \
     shapes/Triangle.h
 
 SOURCES += \
@@ -21,6 +22,7 @@ SOURCES += \
     mainwindow.cpp \
     shapes/Cube.cpp \
     shapes/OpenGLShape.cpp \
+    shapes/Sphere.cpp \
     shapes/Triangle.cpp
 
 # Default rules for deployment.

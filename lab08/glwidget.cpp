@@ -2,6 +2,7 @@
 #include "Settings.h"
 #include "shapes/Triangle.h"
 #include "shapes/Cube.h"
+#include "shapes/Sphere.h"
 
 #include <QOpenGLShaderProgram>
 #include <QCoreApplication>
@@ -245,7 +246,7 @@ void GLWidget::initializeGL()
     m_vao.release();
 
     // m_camera is the model-view matrix. The projection matrix is separately tracked as m_proj
-    m_camera = glm::translate(m_camera, glm::vec3(0, 0, -5 + m_zoomZ)); // Camera stuff (facing -z direction)
+    m_camera = glm::translate(m_camera, glm::vec3(0, 0, -4 + m_zoomZ)); // Camera stuff (facing -z direction)
 }
 
 void GLWidget::bindVbo()
@@ -364,7 +365,7 @@ void GLWidget::wheelEvent(QWheelEvent *event) {
 
 void GLWidget::updateView() {
     m_camera =
-            glm::translate(glm::vec3(0.0, 0.0, -5.0 + m_zoomZ)) *
+            glm::translate(glm::vec3(0.0, 0.0, -4.0 + m_zoomZ)) *
             glm::rotate(glm::radians(m_angleXY[1]), glm::vec3(0.0, 1.0, 0.0)) *
             glm::rotate(glm::radians(m_angleXY[0]), glm::vec3(1.0, 0.0, 0.0));
     update();
@@ -384,7 +385,8 @@ void GLWidget::settingsChange()
             m_shape = std::make_unique<Cube>(settings.shapeParameter1);
             m_currShape = SHAPE_CUBE;
         } else if (settings.shapeType == SHAPE_SPHERE) {
-//            m_shape = std::make_unique<Sphere>(settings.shapeParameter1, settings.shapeParameter2);
+            m_shape = std::make_unique<Sphere>(settings.shapeParameter1, settings.shapeParameter2);
+            m_currShape = SHAPE_SPHERE;
         }
     }
 

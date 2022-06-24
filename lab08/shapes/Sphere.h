@@ -1,5 +1,5 @@
-#ifndef CUBE_H
-#define CUBE_H
+#ifndef SPHERE_H
+#define SPHERE_H
 
 #include <vector>
 #include <gl.h>
@@ -7,20 +7,22 @@
 
 #include "OpenGLShape.h"
 
-class Cube : public OpenGLShape
+class Sphere : public OpenGLShape
 {
 public:
-    Cube(int param1);
-    ~Cube();
+    Sphere(int param1, int param2);
+    ~Sphere();
 
 private:
     void setVertexData();
     void makeTile(glm::vec3 topLeft, glm::vec3 bottomLeft,
                   glm::vec3 bottomRight, glm::vec3 topRight);
-    void makeFace(glm::vec3 topLeft, glm::vec3 bottomLeft,
-                  glm::vec3 bottomRight, glm::vec3 topRight);
+    void makeSlice(float currTheta, float nextTheta);
+    void makeSphere();
 
+    float m_radius;
     int m_param1;
+    int m_param2;
 };
 
-#endif // CUBE_H
+#endif // SPHERE_H

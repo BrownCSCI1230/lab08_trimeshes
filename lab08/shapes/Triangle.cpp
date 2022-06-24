@@ -17,6 +17,7 @@ void Triangle::setVertexData()
     // Note: you may find the insertVec3 function (in the OpenGLShape class
     //       useful in adding your points into m_vertexData
 
+    // i think we should change the points so it's a right triangle. that way it matches the right triangle shape used in all the 3d shapes
     glm::vec3 first = glm::vec3(-0.5f, -0.5f, 0.0f);
     glm::vec3 second = glm::vec3(0.5f, -0.5f, 0.0f);
     glm::vec3 third = glm::vec3(0.0f, 0.5f, 0.0f);
