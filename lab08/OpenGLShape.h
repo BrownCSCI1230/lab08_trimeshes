@@ -14,6 +14,7 @@ public:
 
 protected:
     std::vector<GLfloat> m_vertexData;
+
 };
 
 #endif // OPENGLSHAPE_H
