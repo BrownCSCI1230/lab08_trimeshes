@@ -1,6 +1,8 @@
 #ifndef GLWIDGET_H
 #define GLWIDGET_H
 
+#include "shapes/OpenGLShape.h"
+
 #include <QOpenGLWidget>
 #include <QOpenGLFunctions>
 #include <QOpenGLVertexArrayObject>
@@ -19,6 +21,8 @@ class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions
 public:
     GLWidget(QWidget *parent = nullptr); // QWidget is the base class for all user interface objects
     ~GLWidget();
+
+    void settingsChange();
 
 protected:
     void initializeGL() override;
@@ -40,6 +44,7 @@ private:
     QOpenGLVertexArrayObject m_vao;
     QOpenGLBuffer m_vbo;
 
+    void bindVbo();
 
     QOpenGLShaderProgram *m_program = nullptr;
     int m_default_projLoc;
@@ -64,6 +69,9 @@ private:
     glm::mat4x4 m_camera;
     glm::mat4x4 m_world;
     static bool m_transparent;
+
+    int m_currShape;
+    std::unique_ptr<OpenGLShape> m_shape;
 };
 
 #endif // GLWIDGET_H

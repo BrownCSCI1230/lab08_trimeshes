@@ -1,5 +1,8 @@
 #include "glwidget.h"
-#include "OpenGLShape.h"
+#include "Settings.h"
+#include "shapes/Triangle.h"
+#include "shapes/Cube.h"
+
 #include <QOpenGLShaderProgram>
 #include <QCoreApplication>
 #include <math.h>
@@ -7,7 +10,9 @@
 #include "glm/gtx/transform.hpp"
 
 GLWidget::GLWidget(QWidget *parent)
-    : QOpenGLWidget(parent)
+    : QOpenGLWidget(parent),
+      m_currShape(SHAPE_TRIANGLE),
+      m_shape(std::unique_ptr<Triangle>(new Triangle))
 {
     std::cout<<"GLWIDGET CONSTRUCTOR"<<std::endl;
 }
@@ -152,12 +157,6 @@ void GLWidget::initializeGL()
     initializeOpenGLFunctions();
     glClearColor(103/255.f, 142/255.f, 166/255.f, 1); // set the background color
 
-    // Create the OpenGLShape and get its vertices and normals
-    OpenGLShape *shape = new OpenGLShape();
-    verts = shape->generateShape();
-    m_numTriangles = int(verts.size()) / 6;
-    delete(shape);
-
     // Create Normals shader program
     m_normalsProgram = new QOpenGLShaderProgram;
     m_normalsProgram->addShaderFromSourceCode(QOpenGLShader::Vertex, normalsVertexShaderSourceCore);
@@ -196,6 +195,19 @@ void GLWidget::initializeGL()
     m_vao.create();
     m_vao.bind();
     m_vbo.create();
+    bindVbo();
+    m_vao.release();
+
+    // m_camera is the model-view matrix. The projection matrix is separately tracked as m_proj
+    m_camera = glm::translate(m_camera, glm::vec3(0, 0, -5)); // Camera stuff (facing -z direction)
+}
+
+void GLWidget::bindVbo()
+{
+    // Create the OpenGLShape and get its vertices and normals
+    verts = m_shape->generateShape();
+    m_numTriangles = int(verts.size()) / 6;
+
     m_vbo.bind();
     m_vbo.allocate(verts.data(), verts.size()*sizeof(GLfloat));
     glEnableVertexAttribArray(0);
@@ -205,10 +217,6 @@ void GLWidget::initializeGL()
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat),
                              reinterpret_cast<void *>(3 * sizeof(GLfloat)));
     m_vbo.release();
-    m_vao.release();
-
-    // m_camera is the model-view matrix. The projection matrix is separately tracked as m_proj
-    m_camera = glm::translate(m_camera, glm::vec3(0, 0, -5)); // Camera stuff (facing -z direction)
 }
 
 void GLWidget::paintGL()
@@ -293,4 +301,26 @@ void GLWidget::mouseReleaseEvent(QMouseEvent *event) {
         m_isDragging = false;
         update();
     }
+}
+
+/* -----------------------------------------------
+ *   Settings Change
+ * -----------------------------------------------
+*/
+void GLWidget::settingsChange()
+{
+    if (settings.shapeType != m_currShape) {
+        if (settings.shapeType == SHAPE_TRIANGLE) {
+            m_shape = std::make_unique<Triangle>();
+            m_currShape = SHAPE_TRIANGLE;
+        } else if (settings.shapeType == SHAPE_CUBE) {
+            m_shape = std::make_unique<Cube>();
+            m_currShape = SHAPE_CUBE;
+        } else if (settings.shapeType == SHAPE_SPHERE) {
+//            m_shape = std::make_unique<Sphere>(settings.shapeParameter1, settings.shapeParameter2);
+        }
+    }
+
+    bindVbo();
+    update();
 }
