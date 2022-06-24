@@ -12,15 +12,22 @@ Triangle::~Triangle()
 
 void Triangle::setVertexData()
 {
-    m_vertexData =  // PLACEHOLDER: Hard-coded triangle
-    { //     COORDINATES     /        NORMALS      //
-        -0.5f, 1.0f,  0.5f,     0.83f, 0.70f, 0.44f,
-        -0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,
-         0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,
-         //0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,
-         //0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f
-        -0.5f, 1.0f,  0.5f,     0.83f, 0.70f, 0.44f,
-         0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,
-        -0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f
-    };
+    // [TODO]: Task 1 -- update m_vertexData with the vertices and normals
+    //         needed to tesselate a triangle
+    // Note: you may find the insertVec3 function (in the OpenGLShape class
+    //       useful in adding your points into m_vertexData
+
+    glm::vec3 first = glm::vec3(-0.5f, -0.5f, 0.0f);
+    glm::vec3 second = glm::vec3(0.5f, -0.5f, 0.0f);
+    glm::vec3 third = glm::vec3(0.0f, 0.5f, 0.0f);
+
+    glm::vec3 normal = glm::normalize(glm::cross(second - first,
+                                                 third - second));
+
+    insertVec3(m_vertexData, first);
+    insertVec3(m_vertexData, normal);
+    insertVec3(m_vertexData, second);
+    insertVec3(m_vertexData, normal);
+    insertVec3(m_vertexData, third);
+    insertVec3(m_vertexData, normal);
 }

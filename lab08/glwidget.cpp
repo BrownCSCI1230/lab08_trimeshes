@@ -381,7 +381,7 @@ void GLWidget::settingsChange()
             m_shape = std::make_unique<Triangle>();
             m_currShape = SHAPE_TRIANGLE;
         } else if (settings.shapeType == SHAPE_CUBE) {
-            m_shape = std::make_unique<Cube>();
+            m_shape = std::make_unique<Cube>(settings.shapeParameter1);
             m_currShape = SHAPE_CUBE;
         } else if (settings.shapeType == SHAPE_SPHERE) {
 //            m_shape = std::make_unique<Sphere>(settings.shapeParameter1, settings.shapeParameter2);
