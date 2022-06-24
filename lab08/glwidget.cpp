@@ -2,7 +2,6 @@
 #include "Settings.h"
 #include "Shapes/Triangle.h"
 #include "Shapes/Cube.h"
-#include <glm/gtc/matrix_transform.hpp>
 
 #include <QOpenGLShaderProgram>
 #include <QCoreApplication>

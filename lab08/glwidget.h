@@ -6,7 +6,6 @@
 #include <QOpenGLVertexArrayObject>
 #include <QOpenGLBuffer>
 #include <QMatrix4x4>
-#include <glm/glm.hpp>
 #include "Shapes/OpenGLShape.h"
 
 #include <QMouseEvent>
