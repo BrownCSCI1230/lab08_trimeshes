@@ -5,6 +5,7 @@
 #include <QSlider>
 #include <QSpinBox>
 #include <QRadioButton>
+#include <QCheckBox>
 
 #include "glwidget.h"
 
@@ -23,6 +24,7 @@ private:
     QSlider *p2Slider;
     QSpinBox *p1Box;
     QSpinBox *p2Box;
+    QCheckBox *showWireframeNormals;
 
     QRadioButton *triangleCB;
     QRadioButton *cubeCB;
@@ -31,29 +33,19 @@ private:
     QRadioButton *coneCB;
 
     void connectParam1();
-    void disconnectParam1();
-
-    void connectParam2();
-    void disconnectParam2();
+    void connectParam2();;
+    void connectWireframeNormals();
 
     void connectTriangle();
-    void disconnectTriangle();
-
     void connectCube();
-    void disconnectCube();
-
     void connectSphere();
-    void disconnectSphere();
-
     void connectCylinder();
-    void disconnectCylinder();
-
     void connectCone();
-    void disconnectCone();
 
 private slots:
     void onValChangeP1(int newValue);
     void onValChangeP2(int newValue);
+    void onWireframeNormalsChange();
 
     void onTriChange();
     void onCubeChange();

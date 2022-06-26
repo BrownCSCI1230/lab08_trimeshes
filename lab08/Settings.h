@@ -15,6 +15,7 @@ struct Settings {
     int shapeType;
     int shapeParameter1 = 1;
     int shapeParameter2 = 1;
+    bool showWireframeNormals = true;
 };
 
 

@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     // Create a main window. See mainwindow.h/cpp for details. Contains a GLWidget (see glwidget.h/cpp for details)
     MainWindow w;
     //w.resize(w.sizeHint());
-    w.resize(600, 400);
+    w.resize(650, 400);
     w.setWindowTitle(QStringLiteral("Lab 8 Trimeshes"));
     int desktopArea = QGuiApplication::primaryScreen()->size().width() *
                       QGuiApplication::primaryScreen()->size().height();

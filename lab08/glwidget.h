@@ -81,6 +81,7 @@ private:
     // Tracking params
     int m_currParam1;
     int m_currParam2;
+    bool m_currShowWireframeNormals = true;
 };
 
 #endif // GLWIDGET_H

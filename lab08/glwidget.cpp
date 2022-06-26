@@ -287,27 +287,28 @@ void GLWidget::paintGL()
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glDrawArrays(GL_TRIANGLES, 0, m_numTriangles);
 
-    // Draw normals
-    m_normalsTipsProgram->bind(); // arrow head
-    m_normalsTipsProgram->setUniformValue(m_normalTip_projLoc, glmMatToQMat(m_proj));
-    m_normalsTipsProgram->setUniformValue(m_normalTip_mvLoc, glmMatToQMat(m_camera * m_world));
-    glDrawArrays(GL_TRIANGLES, 0, m_numTriangles);
+    if (settings.showWireframeNormals) {
+        // Draw normals
+        m_normalsTipsProgram->bind(); // arrow head
+        m_normalsTipsProgram->setUniformValue(m_normalTip_projLoc, glmMatToQMat(m_proj));
+        m_normalsTipsProgram->setUniformValue(m_normalTip_mvLoc, glmMatToQMat(m_camera * m_world));
+        glDrawArrays(GL_TRIANGLES, 0, m_numTriangles);
 
-    m_normalsProgram->bind(); // arrow body
-    m_normalsProgram->setUniformValue(m_normal_projLoc, glmMatToQMat(m_proj));
-    m_normalsProgram->setUniformValue(m_normal_mvLoc, glmMatToQMat(m_camera * m_world));
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-    glDrawArrays(GL_TRIANGLES, 0, m_numTriangles);
+        m_normalsProgram->bind(); // arrow body
+        m_normalsProgram->setUniformValue(m_normal_projLoc, glmMatToQMat(m_proj));
+        m_normalsProgram->setUniformValue(m_normal_mvLoc, glmMatToQMat(m_camera * m_world));
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glDrawArrays(GL_TRIANGLES, 0, m_numTriangles);
 
-
-    // Draw wireframe
-    glEnable(GL_POLYGON_OFFSET_LINE);
-    glPolygonOffset(-1, -1);
-    m_wireframeProgram->bind();
-    m_wireframeProgram->setUniformValue(m_wireframe_projLoc, glmMatToQMat(m_proj));
-    m_wireframeProgram->setUniformValue(m_normal_mvLoc, glmMatToQMat(m_camera * m_world));
-    glDrawArrays(GL_TRIANGLES, 0, m_numTriangles);
-    glPolygonOffset(0, 0);
+        // Draw wireframe
+        glEnable(GL_POLYGON_OFFSET_LINE);
+        glPolygonOffset(-1, -1);
+        m_wireframeProgram->bind();
+        m_wireframeProgram->setUniformValue(m_wireframe_projLoc, glmMatToQMat(m_proj));
+        m_wireframeProgram->setUniformValue(m_normal_mvLoc, glmMatToQMat(m_camera * m_world));
+        glDrawArrays(GL_TRIANGLES, 0, m_numTriangles);
+        glPolygonOffset(0, 0);
+    }
 }
 
 void GLWidget::resizeGL(int w, int h)
@@ -381,6 +382,13 @@ void GLWidget::updateView() {
 */
 void GLWidget::settingsChange()
 {
+    // show wireframe / normals
+    if (settings.showWireframeNormals != m_currShowWireframeNormals) {
+        m_currShowWireframeNormals = settings.showWireframeNormals;
+        update();
+        return;
+    }
+
     // if shape settings change
     if (settings.shapeType != m_currShape) {
         if (settings.shapeType == SHAPE_TRIANGLE) {

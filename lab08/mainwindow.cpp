@@ -50,7 +50,7 @@ MainWindow::MainWindow()
     width_spacer->setText("                                               ");
     width_spacer->setFont(font);
 
-    // Create button controls to toggle Cube and Sphere
+    // Create button controls to toggle 3D shapes
     triangleCB = new QRadioButton(); // Triangle button
     triangleCB->setText(QStringLiteral("Triangle"));
     triangleCB->setChecked(true); // Default Triangle toggled
@@ -66,6 +66,11 @@ MainWindow::MainWindow()
 
     coneCB = new QRadioButton(); // Cone button
     coneCB->setText(QStringLiteral("Cone"));
+
+    // Create toggle for showing wireframe / normals
+    showWireframeNormals = new QCheckBox();
+    showWireframeNormals->setText(QStringLiteral("Show Wireframe and Normals"));
+    showWireframeNormals->setChecked(true);
 
     // Creates the boxes containing the parameter sliders and number boxes
     QGroupBox *p1Layout = new QGroupBox(); // horizonal slider 1 alignment
@@ -120,6 +125,7 @@ MainWindow::MainWindow()
     vLayout->addWidget(p1Layout);
     vLayout->addWidget(param2_label);
     vLayout->addWidget(p2Layout);
+    vLayout->addWidget(showWireframeNormals);
 
     // Connects the sliders and number boxes for the parameters
     connectParam1();
@@ -130,6 +136,8 @@ MainWindow::MainWindow()
     connectCube();
     connectSphere();
 
+    // Connects the toggle for showing wireframe / normals
+    connectWireframeNormals();
 }
 
 //******************************** Handles Parameter 1 UI Changes ********************************//
@@ -140,21 +148,12 @@ void MainWindow::connectParam1()
             this, &MainWindow::onValChangeP1);
 }
 
-void MainWindow::disconnectParam1()
-{
-    disconnect(p1Slider, &QSlider::valueChanged, this, &MainWindow::onValChangeP1);
-    disconnect(p1Box, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),
-            this, &MainWindow::onValChangeP1);
-}
-
 void MainWindow::onValChangeP1(int newValue)
 {
-    disconnectParam1();
     p1Slider->setValue(newValue);
     p1Box->setValue(newValue);
     settings.shapeParameter1 = p1Slider->value();
     glWidget->settingsChange();
-    connectParam1();
 }
 
 //******************************** Handles Parameter 2 UI Changes ********************************//
@@ -165,21 +164,12 @@ void MainWindow::connectParam2()
             this, &MainWindow::onValChangeP2);
 }
 
-void MainWindow::disconnectParam2()
-{
-    disconnect(p2Slider, &QSlider::valueChanged, this, &MainWindow::onValChangeP2);
-    disconnect(p2Box, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged),
-            this, &MainWindow::onValChangeP2);
-}
-
 void MainWindow::onValChangeP2(int newValue)
 {
-    disconnectParam2();
     p2Slider->setValue(newValue);
     p2Box->setValue(newValue);
     settings.shapeParameter2 = p2Slider->value();
     glWidget->settingsChange();
-    connectParam2();
 }
 
 //******************************** Handles Shape Type UI Changes ********************************//
@@ -189,21 +179,14 @@ void MainWindow::connectTriangle()
     connect(triangleCB, &QRadioButton::clicked, this, &MainWindow::onTriChange);
 }
 
-void MainWindow::disconnectTriangle()
-{
-    disconnect(triangleCB, &QRadioButton::clicked, this, &MainWindow::onTriChange);
-}
-
 void MainWindow::onTriChange()
 {
-    disconnectTriangle();
     settings.shapeType = SHAPE_TRIANGLE;
     p1Slider->setMinimum(1);
     p2Slider->setMinimum(1);
     p1Slider->setValue(1);
     p2Slider->setValue(1);
     glWidget->settingsChange();
-    connectTriangle();
 }
 
 // cube
@@ -212,21 +195,14 @@ void MainWindow::connectCube()
     connect(cubeCB, &QRadioButton::clicked, this, &MainWindow::onCubeChange);
 }
 
-void MainWindow::disconnectCube()
-{
-    disconnect(cubeCB, &QRadioButton::clicked, this, &MainWindow::onCubeChange);
-}
-
 void MainWindow::onCubeChange()
 {
-    disconnectCube();
     settings.shapeType = SHAPE_CUBE;
     p1Slider->setMinimum(1);
     p2Slider->setMinimum(1);
     p1Slider->setValue(1);
     p2Slider->setValue(1);
     glWidget->settingsChange();
-    connectCube();
 }
 
 // sphere
@@ -235,21 +211,14 @@ void MainWindow::connectSphere()
     connect(sphereCB, &QRadioButton::clicked, this, &MainWindow::onSphereChange);
 }
 
-void MainWindow::disconnectSphere()
-{
-    disconnect(sphereCB, &QRadioButton::clicked, this, &MainWindow::onSphereChange);
-}
-
 void MainWindow::onSphereChange()
 {
-    disconnectSphere();
     settings.shapeType = SHAPE_SPHERE;
     p1Slider->setMinimum(2);
     p2Slider->setMinimum(3);
     p1Slider->setValue(2);
     p2Slider->setValue(3);
     glWidget->settingsChange();
-    connectSphere();
 }
 
 // cylinder
@@ -258,21 +227,14 @@ void MainWindow::connectCylinder()
     connect(cylinderCB, &QRadioButton::clicked, this, &MainWindow::onCylinderChange);
 }
 
-void MainWindow::disconnectCylinder()
-{
-    disconnect(cylinderCB, &QRadioButton::clicked, this, &MainWindow::onCylinderChange);
-}
-
 void MainWindow::onCylinderChange()
 {
-    disconnectCylinder();
     settings.shapeType = SHAPE_CYLINDER;
     p1Slider->setMinimum(1);
     p2Slider->setMinimum(3);
     p1Slider->setValue(1);
     p2Slider->setValue(3);
     glWidget->settingsChange();
-    connectCylinder();
 }
 
 // cone
@@ -281,21 +243,26 @@ void MainWindow::connectCone()
     connect(coneCB, &QRadioButton::clicked, this, &MainWindow::onConeChange);
 }
 
-void MainWindow::disconnectCone()
-{
-    disconnect(coneCB, &QRadioButton::clicked, this, &MainWindow::onConeChange);
-}
-
 void MainWindow::onConeChange()
 {
-    disconnectCone();
     settings.shapeType = SHAPE_CONE;
     p1Slider->setMinimum(1);
     p2Slider->setMinimum(3);
     p1Slider->setValue(1);
     p2Slider->setValue(3);
     glWidget->settingsChange();
-    connectCone();
+}
+
+//***************************** Handles Wireframe/Normals UI Changes *****************************//
+void MainWindow::connectWireframeNormals()
+{
+    connect(showWireframeNormals, &QCheckBox::clicked, this, &MainWindow::onWireframeNormalsChange);
+}
+
+void MainWindow::onWireframeNormalsChange()
+{
+    settings.showWireframeNormals = !settings.showWireframeNormals;
+    glWidget->settingsChange();
 }
 
 MainWindow::~MainWindow()
@@ -309,5 +276,5 @@ MainWindow::~MainWindow()
     delete(sphereCB);
     delete(cylinderCB);
     delete(coneCB);
+    delete(showWireframeNormals);
 }
-
