@@ -10,7 +10,9 @@ HEADERS += \
     Settings.h \
     glwidget.h \
     mainwindow.h \
+    shapes/Cone.h \
     shapes/Cube.h \
+    shapes/Cylinder.h \
     shapes/OpenGLShape.h \
     shapes/Sphere.h \
     shapes/Triangle.h
@@ -20,7 +22,9 @@ SOURCES += \
     glwidget.cpp \
     main.cpp \
     mainwindow.cpp \
+    shapes/Cone.cpp \
     shapes/Cube.cpp \
+    shapes/Cylinder.cpp \
     shapes/OpenGLShape.cpp \
     shapes/Sphere.cpp \
     shapes/Triangle.cpp

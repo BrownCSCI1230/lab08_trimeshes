@@ -24,6 +24,7 @@ public:
     ~OpenGLShape();
 
     std::vector<GLfloat> generateShape();
+    virtual void updateParams(int param1, int param2);
 
 protected:
     std::vector<GLfloat> m_vertexData;

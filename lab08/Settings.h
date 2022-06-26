@@ -13,8 +13,8 @@ enum ShapeType {
 
 struct Settings {
     int shapeType;
-    int shapeParameter1;
-    int shapeParameter2;
+    int shapeParameter1 = 1;
+    int shapeParameter2 = 1;
 };
 
 

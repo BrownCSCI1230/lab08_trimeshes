@@ -77,6 +77,10 @@ private:
     // Tracking shape to render
     int m_currShape;
     std::unique_ptr<OpenGLShape> m_shape;
+
+    // Tracking params
+    int m_currParam1;
+    int m_currParam2;
 };
 
 #endif // GLWIDGET_H

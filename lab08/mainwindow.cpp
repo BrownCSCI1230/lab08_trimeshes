@@ -6,6 +6,7 @@
 
 #include <QLabel>
 #include <QGroupBox>
+#include <iostream>
 
 MainWindow::MainWindow()
 {
@@ -53,10 +54,18 @@ MainWindow::MainWindow()
     triangleCB = new QRadioButton(); // Triangle button
     triangleCB->setText(QStringLiteral("Triangle"));
     triangleCB->setChecked(true); // Default Triangle toggled
+
     cubeCB = new QRadioButton(); // Cube button
     cubeCB->setText(QStringLiteral("Cube"));
+
     sphereCB = new QRadioButton(); // Sphere button
     sphereCB->setText(QStringLiteral("Sphere"));
+
+    cylinderCB = new QRadioButton(); // Cylinder button
+    cylinderCB->setText(QStringLiteral("Cylinder"));
+
+    coneCB = new QRadioButton(); // Cone button
+    coneCB->setText(QStringLiteral("Cone"));
 
     // Creates the boxes containing the parameter sliders and number boxes
     QGroupBox *p1Layout = new QGroupBox(); // horizonal slider 1 alignment
@@ -69,21 +78,25 @@ MainWindow::MainWindow()
     p1Slider->setTickInterval(1);
     p1Slider->setMinimum(1);
     p1Slider->setMaximum(50);
+    p1Slider->setValue(1);
 
     p1Box = new QSpinBox();
-    p1Box->setMinimum(0);
+    p1Box->setMinimum(1);
     p1Box->setMaximum(50);
     p1Box->setSingleStep(1);
+    p1Box->setValue(1);
 
     p2Slider = new QSlider(Qt::Orientation::Horizontal); // Parameter 2 slider
     p2Slider->setTickInterval(1);
     p2Slider->setMinimum(1);
     p2Slider->setMaximum(50);
+    p2Slider->setValue(1);
 
     p2Box = new QSpinBox();
-    p2Box->setMinimum(0);
+    p2Box->setMinimum(1);
     p2Box->setMaximum(50);
     p2Box->setSingleStep(1);
+    p2Box->setValue(1);
 
     // Adds the slider and number box to the parameter layouts
     l1->addWidget(p1Slider);
@@ -99,6 +112,8 @@ MainWindow::MainWindow()
     vLayout->addWidget(triangleCB);
     vLayout->addWidget(cubeCB);
     vLayout->addWidget(sphereCB);
+    vLayout->addWidget(cylinderCB);
+    vLayout->addWidget(coneCB);
     vLayout->addWidget(width_spacer);
     vLayout->addWidget(params_label);
     vLayout->addWidget(param1_label);
@@ -110,6 +125,7 @@ MainWindow::MainWindow()
     connectParam1();
     connectParam2();
 
+    // Connects the toggles for the shapes
     connectTriangle();
     connectCube();
     connectSphere();
@@ -137,6 +153,7 @@ void MainWindow::onValChangeP1(int newValue)
     p1Slider->setValue(newValue);
     p1Box->setValue(newValue);
     settings.shapeParameter1 = p1Slider->value();
+    glWidget->settingsChange();
     connectParam1();
 }
 
@@ -161,6 +178,7 @@ void MainWindow::onValChangeP2(int newValue)
     p2Slider->setValue(newValue);
     p2Box->setValue(newValue);
     settings.shapeParameter2 = p2Slider->value();
+    glWidget->settingsChange();
     connectParam2();
 }
 
@@ -180,9 +198,11 @@ void MainWindow::onTriChange()
 {
     disconnectTriangle();
     settings.shapeType = SHAPE_TRIANGLE;
-    glWidget->settingsChange();
     p1Slider->setMinimum(1);
     p2Slider->setMinimum(1);
+    p1Slider->setValue(1);
+    p2Slider->setValue(1);
+    glWidget->settingsChange();
     connectTriangle();
 }
 
@@ -201,9 +221,11 @@ void MainWindow::onCubeChange()
 {
     disconnectCube();
     settings.shapeType = SHAPE_CUBE;
-    glWidget->settingsChange();
     p1Slider->setMinimum(1);
     p2Slider->setMinimum(1);
+    p1Slider->setValue(1);
+    p2Slider->setValue(1);
+    glWidget->settingsChange();
     connectCube();
 }
 
@@ -222,13 +244,70 @@ void MainWindow::onSphereChange()
 {
     disconnectSphere();
     settings.shapeType = SHAPE_SPHERE;
-    glWidget->settingsChange();
     p1Slider->setMinimum(2);
     p2Slider->setMinimum(3);
+    p1Slider->setValue(2);
+    p2Slider->setValue(3);
+    glWidget->settingsChange();
     connectSphere();
+}
+
+// cylinder
+void MainWindow::connectCylinder()
+{
+    connect(cylinderCB, &QRadioButton::clicked, this, &MainWindow::onCylinderChange);
+}
+
+void MainWindow::disconnectCylinder()
+{
+    disconnect(cylinderCB, &QRadioButton::clicked, this, &MainWindow::onCylinderChange);
+}
+
+void MainWindow::onCylinderChange()
+{
+    disconnectCylinder();
+    settings.shapeType = SHAPE_CYLINDER;
+    p1Slider->setMinimum(1);
+    p2Slider->setMinimum(3);
+    p1Slider->setValue(1);
+    p2Slider->setValue(3);
+    glWidget->settingsChange();
+    connectCylinder();
+}
+
+// cone
+void MainWindow::connectCone()
+{
+    connect(coneCB, &QRadioButton::clicked, this, &MainWindow::onConeChange);
+}
+
+void MainWindow::disconnectCone()
+{
+    disconnect(coneCB, &QRadioButton::clicked, this, &MainWindow::onConeChange);
+}
+
+void MainWindow::onConeChange()
+{
+    disconnectCone();
+    settings.shapeType = SHAPE_CONE;
+    p1Slider->setMinimum(1);
+    p2Slider->setMinimum(3);
+    p1Slider->setValue(1);
+    p2Slider->setValue(3);
+    glWidget->settingsChange();
+    connectCone();
 }
 
 MainWindow::~MainWindow()
 {
+    delete(glWidget);
+    delete(p1Slider);
+    delete(p1Box);
+    delete(p2Box);
+    delete(triangleCB);
+    delete(cubeCB);
+    delete(sphereCB);
+    delete(cylinderCB);
+    delete(coneCB);
 }
 

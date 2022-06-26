@@ -13,14 +13,23 @@ Sphere::~Sphere()
 
 }
 
+void Sphere::updateParams(int param1, int param2)
+{
+    m_vertexData = std::vector<GLfloat>();
+    m_param1 = param1;
+    m_param2 = param2;
+    setVertexData();
+}
+
 void Sphere::makeTile(glm::vec3 topLeft, glm::vec3 bottomLeft,
                       glm::vec3 bottomRight, glm::vec3 topRight)
 {
 
+    // [TODO]: Task 3.1.1 -- Implement the makeTile function for a sphere
+    // Note: this function is very similar to the makeTile() function for cube,
+    //       but the normals are calculated in a different way!
 
-
-    // !!!! NOTE THE NORMAL CALCULATION HERE IS DIFFERENT THAN IN CUBE !!!!
-    // ======== TASK ___: TA SOLUTION ==========
+    // ======== TASK 3.1.1: TA SOLUTION ==========
     glm::vec3 tlNormal = glm::normalize(topLeft);
     glm::vec3 blNormal = glm::normalize(bottomLeft);
     glm::vec3 brNormal = glm::normalize(bottomRight);
@@ -42,10 +51,11 @@ void Sphere::makeTile(glm::vec3 topLeft, glm::vec3 bottomLeft,
 
 void Sphere::makeSlice(float currentTheta, float nextTheta) {
 
+    // [TODO]: Task 3.1.2 -- create a single slice of the sphere using the
+    //         makeTile() function you implemented in Task 3.1.1
+    // Note: think about how param 1 comes into play here!
 
-
-
-    // ======== TASK ___: TA SOLUTION ==========
+    // ======== TASK 3.1.2: TA SOLUTION ==========
     float phiStep = glm::radians(180.f / m_param1);
     for (int bite = 0; bite < m_param1; bite++) {
         float bottomPhi = (bite % (m_param1 + 1)) * phiStep;
@@ -77,6 +87,11 @@ void Sphere::makeSlice(float currentTheta, float nextTheta) {
 
 void Sphere::makeSphere()
 {
+    // [TODO]: Task 3.2 -- create a full sphere using the makeSlice() function you
+    //         implemented in Task 3.1.2
+    // Note: think about how param 2 comes into play here!
+
+    // ======== TASK 3.2: TA SOLUTION ==========
     float thetaStep = glm::radians(360.f / m_param2);
     for (int slice = 0; slice < m_param2; slice++) {
         float currentTheta = slice * thetaStep;
@@ -86,9 +101,6 @@ void Sphere::makeSphere()
 }
 
 void Sphere::setVertexData() {
-    m_param1 = 7;
-    m_param2 = 6;
-
     // Uncomment to make slice
 //    float thetaStep = glm::radians(360.f / m_param2);
 //    float currentTheta = 0 * thetaStep;

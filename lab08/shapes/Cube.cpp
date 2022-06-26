@@ -1,4 +1,5 @@
 #include "Cube.h"
+#include <iostream>
 
 Cube::Cube(int param1) :
     m_param1(param1)
@@ -11,6 +12,13 @@ Cube::~Cube()
 
 }
 
+void Cube::updateParams(int param1, int param2)
+{
+    m_vertexData = std::vector<GLfloat>();
+    m_param1 = param1;
+    setVertexData();
+}
+
 void Cube::makeTile(glm::vec3 topLeft, glm::vec3 bottomLeft,
                     glm::vec3 bottomRight, glm::vec3 topRight)
 {
@@ -18,10 +26,7 @@ void Cube::makeTile(glm::vec3 topLeft, glm::vec3 bottomLeft,
     //         given points (once you have the tile, make sure you add
     //         the points to m_vertexData)
     // Note: pay attention to how you are calculating your normals! you will
-    //       be using this function to create a cube and a sphere
-
-
-
+    //       be using this function to create a cube
 
     // ======== TASK 2.1: TA SOLUTION ==========
     glm::vec3 t1Normal = glm::normalize(glm::cross(bottomLeft - topLeft,
@@ -50,10 +55,7 @@ void Cube::makeFace(glm::vec3 topLeft, glm::vec3 bottomLeft,
     // Note: think about how param 1 affects the number of triangles on
     //       the face of the cube
 
-
-
     // ======== TASK 2.2: TA SOLUTION ==========
-    m_param1 = 7;
     glm::vec3 colChange((topRight.x - topLeft.x) / m_param1,
                         (topRight.y - topLeft.y) / m_param1,
                         (topRight.z - topLeft.z) / m_param1);
@@ -88,17 +90,15 @@ void Cube::setVertexData()
 //             glm::vec3(0.5f, -0.5f, 0.5f),
 //             glm::vec3(0.5f, 0.5f, 0.5f));
 
-    // uncomment this for task 2.3:
+
+    // [TODO]: Task 2.3 -- Use the makeFace() function to make all 6 sides of the cube
+
+    // ======== TASK 2.3: TA SOLUTION ==========
     // positive z
     makeFace(glm::vec3(-0.5f, 0.5f, 0.5f),
              glm::vec3(-0.5f, -0.5f, 0.5f),
              glm::vec3(0.5f, -0.5f, 0.5f),
              glm::vec3(0.5f, 0.5f, 0.5f));
-
-
-
-
-    // ======== TASK 2.3: TA SOLUTION ==========
     // negative z
     makeFace(glm::vec3(0.5f, 0.5f,-0.5f),
              glm::vec3(0.5f,-0.5f,-0.5f),

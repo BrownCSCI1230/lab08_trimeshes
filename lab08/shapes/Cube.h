@@ -13,6 +13,8 @@ public:
     Cube(int param1);
     ~Cube();
 
+    void updateParams(int param1, int param2) override;
+
 private:
     void setVertexData();
     void makeTile(glm::vec3 topLeft, glm::vec3 bottomLeft,

@@ -27,6 +27,8 @@ private:
     QRadioButton *triangleCB;
     QRadioButton *cubeCB;
     QRadioButton *sphereCB;
+    QRadioButton *cylinderCB;
+    QRadioButton *coneCB;
 
     void connectParam1();
     void disconnectParam1();
@@ -43,11 +45,20 @@ private:
     void connectSphere();
     void disconnectSphere();
 
+    void connectCylinder();
+    void disconnectCylinder();
+
+    void connectCone();
+    void disconnectCone();
+
 private slots:
     void onValChangeP1(int newValue);
     void onValChangeP2(int newValue);
+
     void onTriChange();
     void onCubeChange();
     void onSphereChange();
+    void onCylinderChange();
+    void onConeChange();
 };
 #endif // MAINWINDOW_H

@@ -13,6 +13,8 @@ public:
     Sphere(int param1, int param2);
     ~Sphere();
 
+    void updateParams(int param1, int param2) override;
+
 private:
     void setVertexData();
     void makeTile(glm::vec3 topLeft, glm::vec3 bottomLeft,
