@@ -100,7 +100,7 @@ Now that you know everything you need to know about triangles and trimeshes, you
 You will first draw a triangle. In the Triangle class, fill out the `tessellate_triangle()` function stub. Use the following coordinate points:
 - `(-0.5, -0.5, 0)`
 - `(0.5, -0.5, 0)`
-- `(0, 0.5, 0)`
+- `(-0.5, 0.5, 0)`
 
 Don’t forget the normals!
 
