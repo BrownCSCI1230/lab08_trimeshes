@@ -53,9 +53,40 @@ If you combine multiple triangles together, you'll end up with a trimesh! Neat, 
 </details>
 
 # Creating Your Own Trimeshes
+Well, now we know the most important things:
+1. A shape can be represented as a variable number of triangles, depending on the level of detail
+2. A collection of triangles can be represented via a list of positions and normals
+
+Now, all that remains is to make our own implementation. At a high level, we are going to take a shape, a level of detail, and spit out the list!
+
 ## Our Stencil Code
+Take a look at our stencil code. The only files you need to concern yourself with are the files in the shapes folder. Notice that `Triangle`, `Cube`, `Sphere`, `Cone`, and `Cylinder` inherit from `OpenGLShape`. For this lab, you'll only be working with `Triangle`, `Cube`, and `Sphere`. Check the comments within the code for how exactly to edit each shape. 
+
+For our purposes, each shape is centered at the origin and has a radius of 1. In other words, they lie in the range \[-0.5, 0.5] on all axes. 
+
+You'll notice on the left side of the UI, there are toggles to change the shape and sliders to change parameter 1 and parameter 2. The parameters control the tessellation of each shape. We'll go into detail about what specifically the parameters do later in the handout. 
+
+Most importantly, notice that each shape inherits `std::vector<float> m_vertexData` from `OpenGLShape`. You'll be editing this list with the positions and normals for each shape. **Note that `m_vertexData` alternates between vertex positions and normals!**
+
+![m_vertexData][url]
+
+On the right side of the UI, you will eventually see the shapes generated from `m_vertexData`. You won't see anything right now because `m_vertexData` is empty. 
+
+|**_Task 1:_**|
+|:---|
+|Make a Triangle|
+|In the `Triangle` class, fill out the `setVertexData()` function stub. Use the following coordinate points: <ul><li>(-0.5, -0.5, 0)</li><li>(0.5, -0.5, 0)</li><li>(-0.5, 0.5, 0)</li></ul>|
+
+Your triangle should look like this:
+
+![triangle screenshot][url]
+  
+Notice that if you spin the triangle around, it'll disappear. This is backface culling!
+
 ## Creating a Cube
-### Cureating a Quad
+
+
+### Creating a Quad
 ### Creating a Plane, w/ Tessellation
 ### Bringing It All Together: Creating a Cube
 
