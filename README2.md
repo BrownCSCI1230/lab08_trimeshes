@@ -79,16 +79,45 @@ On the right side of the UI, you will eventually see the shapes generated from `
 
 Your triangle should look like this:
 
-![triangle screenshot][url]
+![triangle gif][url]
   
 Notice that if you spin the triangle around, it'll disappear. This is backface culling!
 
 ## Creating a Cube
+Now that you've rendered a triangle, it's time to render a Cube :)
 
+### Creating a Tile
+|**_Task 2:_**|
+|:---|
+|Make a Tile|
+|In the `Cube` class, fill out the `makeTile()` function stub. Uncomment the `makeTile()` function call in `setVertexData()`. Note that you'll use this function for the next task.|
 
-### Creating a Quad
-### Creating a Plane, w/ Tessellation
+Your tile should look like this:
+
+![tile gif][url]
+
+### Creating a Face, w/ Tessellation
+Now, that you have your tile, you can create one face of the Cube! Notice how parameter 1 controls the number of tiles in each row and column:
+
+![shape tessellation img][url]
+
+|**_Task 3:_**|
+|:---|
+|Make a Face|
+|In the `Cube` class, fill out the `makeFace()` function stub. Comment out the `makeTile()` function call in `setVertexData()` and uncomment the `makeFace()` function call. This will render the positive z face of the Cube. <ul><li>The face should tessellate differently depending on parameter 1.</li><li>Use the makeTile() function you wrote in the previous task in order to create a face of the cube.</li></ul>|
+
+Your face should look like this:
+
+![face tessellation gif][url]
+
 ### Bringing It All Together: Creating a Cube
+|**_Task 4:_**|
+|:---|
+|Make a Cube|
+|Now that you have one side of the Cube, you should be able to implement all 6 sides of your Cube using the `makeFace()` function you implemented. You should call `makeFace()` in `setVertexData()`. It might be helpful to draw a diagram of the Cube to figure out the positions of all its corners!|
+
+Your Cube should look like this:
+![cube gif][url]
 
 ## Creating a Sphere
 ### Spherical Coordinates Make Things Easier
