@@ -20,7 +20,7 @@ As you can probably guess, we render a triangle from a triplet of vertex positio
 
 ![vertex positions and triangles][url]
 
-### Per-Face-Normals
+### Per-Face Normals
 If we want every point on the triangle to have the same normal, we can use per-face normals. Since we have 3 vertices, we can form two vectors to calculate the normal by taking the cross product of those two vectors.
 
 ![per face normal][https://i.stack.imgur.com/WzZ1l.jpg]
@@ -33,9 +33,24 @@ What if we want every triangle vertex to have a different normal? Then we use pe
 
 For our purposes, we will be using per-vertex normals. Each triangle is represented by a sextuplet of vertex positions and normals in `std::vector<float> vertexData` (we use `vertexData` since it's shorter than `vertexPositionsAndNormals`). Again, the winding order of vertices and normals is \~_counter-clockwise_~. 
 
-### Why Do Normals Matter? Or, Shading and Backface Culling
+### Why Do Normals And Winding Order Matter?
+As you've already seen in the Ray projects and in Lab 06 Lighting you need normals to properly shade objects. In this lab and in the Realtime projects, you need the correct winding order of positions and normals to properly render the objects. This is because of backface culling. Backface culling is a rendering technique that determines which side of the triangle is visible. 
+
+![backface culling gif][url]
+
+You can read more about backface culling [here](https://www.easytechjunkie.com/what-is-back-face-culling.htm).
 
 ## Multiple Triangles, Or, A Triangle Mesh
+If you combine multiple triangles together, you'll end up with a trimesh! Neat, right? Recall, this is called tessellation! How do we represent a collection of triangles? Well, we've already seen a possible solution: just append the additional triangle information onto the back of the list. In our case, this list is still represented as `std::vector<float> vertexData`.
+
+![cube vertex data img][url]
+
+> Notice that `vertexData` can contain repeats since the vertex/normal will appear in the same place!
+
+<details>
+  <summary> Extra: Hand on...surely there's a more efficient way to represent a triangle mesh </summary>
+  Yes, of course there is a more efficient way! Look at all the repeated vertex data :( Instead of triangle meshes, we can use [triangle strips](https://en.wikipedia.org/wiki/Triangle_strip), [triangle fans](https://en.wikipedia.org/wiki/Triangle_fan), etc. 
+</details>
 
 # Creating Your Own Trimeshes
 ## Our Stencil Code
