@@ -62,7 +62,7 @@ Now, all that remains is to make our own implementation. At a high level, we are
 ## Our Stencil Code
 Take a look at our stencil code. The only files you need to concern yourself with are the files in the shapes folder. Notice that `Triangle`, `Cube`, `Sphere`, `Cone`, and `Cylinder` inherit from `OpenGLShape`. For this lab, you'll only be working with `Triangle`, `Cube`, and `Sphere`. Check the comments within the code for how exactly to edit each shape. 
 
-For our purposes, each shape is centered at the origin and has a radius of 1. In other words, they lie in the range \[-0.5, 0.5] on all axes. 
+For our purposes, each shape is centered at the origin and has a radius of 0.5. In other words, they lie in the range \[-0.5, 0.5] on all axes. 
 
 You'll notice on the left side of the UI, there are toggles to change the shape and sliders to change parameter 1 and parameter 2. The parameters control the tessellation of each shape. We'll go into detail about what specifically the parameters do later in the handout. 
 
@@ -74,8 +74,8 @@ On the right side of the UI, you will eventually see the shapes generated from `
 
 |**_Task 1:_**|
 |:---|
-|Make a Triangle|
-|In the `Triangle` class, fill out the `setVertexData()` function stub. Use the following coordinate points: <ul><li>(-0.5, -0.5, 0)</li><li>(0.5, -0.5, 0)</li><li>(-0.5, 0.5, 0)</li></ul>|
+|In the `Triangle` class, fill out the `setVertexData()` function stub.|
+|Use the following coordinate points: <ul><li>(-0.5, -0.5, 0)</li><li>(0.5, -0.5, 0)</li><li>(-0.5, 0.5, 0)</li></ul>|
 
 Your triangle should look like this:
 
@@ -84,13 +84,13 @@ Your triangle should look like this:
 Notice that if you spin the triangle around, it'll disappear. This is backface culling!
 
 ## Creating a Cube
-Now that you've rendered a triangle, it's time to render a Cube :)
+Now that you've rendered a triangle, it's time to render a Cube :) 
 
 ### Creating a Tile
 |**_Task 2:_**|
 |:---|
-|Make a Tile|
-|In the `Cube` class, fill out the `makeTile()` function stub. Uncomment the `makeTile()` function call in `setVertexData()`. Note that you'll use this function for the next task.|
+|In the `Cube` class, fill out the `makeTile()` function stub.|
+|Uncomment the `makeTile()` function call in `setVertexData()`. Note that you'll use this function for the next task.|
 
 Your tile should look like this:
 
@@ -103,8 +103,8 @@ Now, that you have your tile, you can create one face of the Cube! Notice how pa
 
 |**_Task 3:_**|
 |:---|
-|Make a Face|
-|In the `Cube` class, fill out the `makeFace()` function stub. Comment out the `makeTile()` function call in `setVertexData()` and uncomment the `makeFace()` function call. This will render the positive z face of the Cube. <ul><li>The face should tessellate differently depending on parameter 1.</li><li>Use the makeTile() function you wrote in the previous task in order to create a face of the cube.</li></ul>|
+|In the `Cube` class, fill out the `makeFace()` function stub.|
+|Comment out the `makeTile()` function call in `setVertexData()` and uncomment the `makeFace()` function call. This will render the positive z face of the Cube. <ul><li>The face should tessellate differently depending on parameter 1.</li><li>Use the `makeTile()` function you wrote in the previous task in order to create a face of the cube.</li></ul>|
 
 Your face should look like this:
 
@@ -113,15 +113,30 @@ Your face should look like this:
 ### Bringing It All Together: Creating a Cube
 |**_Task 4:_**|
 |:---|
-|Make a Cube|
-|Now that you have one side of the Cube, you should be able to implement all 6 sides of your Cube using the `makeFace()` function you implemented. You should call `makeFace()` in `setVertexData()`. It might be helpful to draw a diagram of the Cube to figure out the positions of all its corners!|
+|Implement all 6 sides of your Cube using the `makeFace()` function you implemented.|
+|<ul><li>You should call `makeFace()` in `setVertexData()`.</li><li>It might be helpful to draw a diagram of the Cube to figure out the positions of all its corners! Remember that the Cube has a radius of 0.5 and lies in the bounds \[-0.5, 0.5] on all axes.</li></ul>|
 
 Your Cube should look like this:
 ![cube gif][url]
 
 ## Creating a Sphere
+Yay! Congratulations on making your Cube! It's time to make a Sphere. 
+
+![sphere parameter gif][url]
+![exploding wedges gif][url]
+
+We can think of the Sphere like an orange. Oranges are made up of wedge and each wedge is made up segments. We can build an orange (aka a sphere) by procedurally generating a collection of orange wedges. 
+
+As shown above, the shape parameters for Sphere are slightly different than Cube. The first parameter controls the number of 'segments' (like latitude), and the second parameter controls the number of 'wedges' (like longitude). 
+
+Like Cube, the Sphere is centered at the origin and has a radius of 0.5, so it lies in the bounds \[-0.5, 0.5] on all axes. 
+
 ### Spherical Coordinates Make Things Easier
+
+
 ### Creating a Wedge
+
+
 ### Creating a Sphere
 
 # End
