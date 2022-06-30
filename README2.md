@@ -132,11 +132,43 @@ As shown above, the shape parameters for Sphere are slightly different than Cube
 Like Cube, the Sphere is centered at the origin and has a radius of 0.5, so it lies in the bounds \[-0.5, 0.5] on all axes. 
 
 ### Spherical Coordinates Make Things Easier
+We can represent this 'orange wedge and segment' idea using spherical coordinates. In terms of spherical coordinates, parameter 1 controls 𝜙 and parameter 2 controls 𝜃. 
 
+<details>
+  <summary>Refresher: The Spherical Coordinate System</summary>
+
+Remember polar coordinates (*r*, 𝜃) from high school geometry? Spherical coordinates (*r*, 𝜃, 𝜙) are like polar coordinates but in 3D! The spherical coordinate system specifies a 3D point in space using (*r*, 𝜃, 𝜙). for more details, read this [Wikipedia article on the Spherical Coordinate System](https://en.wikipedia.org/wiki/Spherical_coordinate_system) :)
+</details>
+
+| Coordinate | Diagram |
+| :---------------------------------------------------------------: | :---------------------------------------------------------------: |	
+| *r*: the radial distance from the origin. For sphere, `r=0.5` | <img src="handout_images/amog-us-among-us.gif" width="300"> |	
+| 𝜃: the polar angle. For sphere, this is in radians. | <img src="handout_images/amog-us-among-us.gif" width="300"> |
+| 𝜙: the azimuthal angle. For sphere, this is in radians. | <img src="handout_images/amog-us-among-us.gif" width="300"> |
 
 ### Creating a Wedge
+|**_Task 5:_**|
+|:---|
+|Implement the `makeTile()` function stub in the `Sphere` Class.|
+|<ul><li>This function should look very similar to the `makeTile()` function in the `Cube` class.</li><li>Note that the normals are calculated differently from those in Cube. The normals for Sphere are per vertex normals. Refer to the diagram for what your normals should look like.</li></ul> ![sphere normals diagram][url]|
 
+|**_Task 6:_**|
+|:---|
+|Implement the `makeWedge()` function stub in the `Sphere` Class.|
+|Uncomment the `makeWedge()` function call in `setVertexData()`. <ul><li>Use the `makeTile()` function from task 5.</li><li>Remember that we are making a wedge, so you need to pay attention to parameter 1 and 𝜙.</li><li>Remember that everything is in radians!</li><li>You may find these function calls helpful:<ul><li>`glm::radians`</li><li>`glm::sin`</li><li>`glm::cos`</li></ul></li><li>You may also find these equations useful:<ul><li>`x = r * sin(𝜃) * cos(𝜙)`</li><li>`y = r * sin(𝜃) * sin(𝜙)`</li><li>`z = r * cos(𝜃)`</li></ul></li></ul>|
+
+Your wedge should look like this:
+
+![wedge gif][url]
 
 ### Creating a Sphere
+|**_Task 7:_**|
+|:---|
+|Implement the `makeOrange()` function stub in the `Sphere` Class.|
+|Comment out the `makeWedge()` function call in `setVertexData()` and uncomment the `makeOrange()` function call. <ul><li>Remember that everything is in radians!</li><li>Remember that we are making multiple wedges (aka a Sphere), so you need to pay attention to parameter 2 and 𝜃.</li></ul>|
 
 # End
+Now you're ready to show your work to a TA and get checked off! Congrats on finishing the Trimeshez lab. 
+
+## Food For Thought
+Next week, you'll be learning how to use OpenGL to render triangle meshes. OpenGL uses VBOs (vertex buffer objects) which store a list of vertices similar to `m_vertexData` in this lab. You'll learn more about this next week, but we just wanted to give you a brief intro. Good luck!
