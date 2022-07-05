@@ -1,27 +1,27 @@
 # Lab 8: Trimeshez Lab
 
 ## 0. Intro
-One of the fundamental applications of computer graphics is to display 3D objects and scenes. A common method that we've seen in lecture is to model 3D objects and scenes using trimeshes, which is a collection of triangles. Recall the Realtime pipeline.
+One of the fundamental applications of computer graphics is to display 3D objects and scenes. Recall the Realtime pipeline from lecture below.
 
 ![realtime pipeline hightlight input data][url]
 
-The first part of the pipeline is the input data where we provide vertex positions, normals, triangle connectivity information, etc. for trimeshes. We will implement trimeshes in this lab and in the Realtime projects. 
+The first part of the pipeline is the input data where we provide vertex positions, normals, triangle connectivity information, etc. for trimeshes which are collections of triangles. We will use trimeshes to model 3D objects and scenes in this lab and in the Realtime projects.
 
-In the Real-Time projects, you will be displaying scenes made up of the following 3D shapes: Cube, Cone, Cylinder, and Sphere. In this lab, you will be implementing two of the four shapes, Cube and Sphere. You will implement the remaining shapes, Cylinder and Cone, in the first Real-Time Project. Throughout the rest of this handout there will be a couple of suggestions that we highly encourage you to consider in your design.
+In the Realtime projects, you will be displaying scenes made up of the following 3D shapes: Cube, Cone, Cylinder, and Sphere. In this lab, you will be implementing two of the four shapes, Cube and Sphere. In the first Realtime Project, you will implement the remaining shapes, Cylinder and Cone. Throughout the rest of this handout there will be a couple of suggestions that we highly encourage you to consider in your design.
 
 By the end of this lab, you will:
 1. Learn to use trimeshes as a way to (approximately) represent an object ('s surface)
 2. Implement a Cube and a Sphere
 
 ## 1. Representing Objects via Trimeshes
-We can represent any \~_surface_~ as a triangle mesh. Conveniently, most objects in the world are defined by a surface. These objects are usually a closed surface bounding a volume like a primitive 3D shape (for example, a cube). 
+We can represent any \~_surface_~ as a triangle mesh. Conveniently, most objects in the world are defined by a surface. These objects are usually a closed surface bounding a volume like a primitive 3D shape (for example, a Cube). 
 
 ![gif of exploding trimesh][url]
 
-With that said, some things cannot be so easily represented by a trimesh. For example, you don't typically think about fog as a surface, so it doesn't make sense to represent it as a trimesh. There are other ways to represent objects, such as volumetric representations. If you're interested, you can read more about volumetric representations [here](https://en.wikipedia.org/wiki/Volume_rendering). 
+With that said, some things cannot be so easily represented by a trimesh. For example, you don't typically think about fog as a surface, so it doesn't make sense to represent it as a trimesh. There are other ways to represent objects like fog, such as volumetric rendering. If you're interested, you can read more about volumetric rendering [here](https://en.wikipedia.org/wiki/Volume_rendering). 
 
-### 1.1 Level-of-Detail (Tesselation)
-Recall from the Ray projects that you represented the 3D shapes as implicit equations. This technically allows for infinite resolution (up to floating point limits). On the other hand, triangle meshes are approximations. This method of representing 3D objects as a collection of triangles is called \~_tessellation_~. The more triangles used to represent a surface, the more realistic the rendering, but the more computation is required. 
+### 1.1 Level-of-Detail (Tessellation Level)
+Recall from the Ray projects that you represented the 3D shapes as implicit equations. This technically allows for infinite resolution (up to floating point limits). On the other hand, trimeshes are approximations. The more triangles used to represent a surface, the more realistic the rendering, but the more computation is required. The number of triangles used, and thus the level-of-detail of the 3D shape, is called the \~_tessellation level_~. 
 
 ~[increasing tessellation image][https://i.stack.imgur.com/uT6do.jpg]
 
@@ -29,7 +29,7 @@ Recall from the Ray projects that you represented the 3D shapes as implicit equa
 Trimeshes are composed of triangles (duh) which are then composed of vertex positions (for rendering the triangle) and normals (for lighting the triangle). 
 
 ### 2.1 A Single Triangle
-As you can probably guess, we render a triangle from a triplet of vertex positions in `std::vector<float> vertexPositions`. It's important to note, that in our case, the winding order of the vertices is \~_counter-clockwise_~. 
+As you can probably guess, we render a triangle from a triplet of vertex positions in `std::vector<float> vertexPositions`. It's important to note, in our case, the winding order of the vertices is \~_counter-clockwise_~. 
 
 ![vertex positions and triangles][url]
 
@@ -47,14 +47,16 @@ What if we want every triangle vertex to have a different normal? Then we use pe
 For our purposes, we will be using per-vertex normals. Each triangle is represented by a sextuplet of vertex positions and normals in `std::vector<float> vertexData` (we use `vertexData` since it's shorter than `vertexPositionsAndNormals`). Again, the winding order of vertices and normals is \~_counter-clockwise_~. 
 
 #### 2.1.3 Why Do Normals And Winding Order Matter?
-As you've already seen in the Ray projects and in Lab 06 Lighting you need normals to properly shade objects. In this lab and in the Realtime projects, you need the correct winding order of positions and normals to properly render the objects. This is because of backface culling. Backface culling is a rendering technique that determines which side of the triangle is visible. 
+As you've already seen in the Ray projects and in Lab 06 Lighting, you need normals to properly shade objects. 
+
+In this lab and in the Realtime projects, you need the correct winding order of positions and normals to properly render the objects. This is because of backface culling. Backface culling is a rendering technique that determines which side of the triangle is visible. 
 
 ![backface culling gif][url]
 
 You can read more about backface culling [here](https://www.easytechjunkie.com/what-is-back-face-culling.htm).
 
-### 2.2 Multiple Triangles, Or, A Triangle Mesh
-If you combine multiple triangles together, you'll end up with a trimesh! Neat, right? Recall, this is called tessellation! How do we represent a collection of triangles? Well, we've already seen a possible solution: just append the additional triangle information onto the back of the list. In our case, this list is still represented as `std::vector<float> vertexData`.
+### 2.2 Multiple Triangles, Or, A Trimesh
+If you combine multiple triangles together, you'll end up with a trimesh! Recall that tessellation levels determines the number of triangles used in the trimesh. How do we represent a collection of triangles? Well, we've already seen a possible solution: just append the additional triangle information onto the back of the list. In our case, this list is still represented as `std::vector<float> vertexData`.
 
 ![cube vertex data img][url]
 
@@ -75,9 +77,9 @@ Now, all that remains is to make our own implementation. At a high level, we are
 ### 3.1 Our Stencil Code
 Take a look at our stencil code. The only files you need to concern yourself with are the files in the shapes folder. Notice that `Triangle`, `Cube`, `Sphere`, `Cone`, and `Cylinder` inherit from `OpenGLShape`. For this lab, you'll only be working with `Triangle`, `Cube`, and `Sphere`. Check the comments within the code for how exactly to edit each shape. 
 
-For our purposes, each shape is centered at the origin and has a radius of 0.5. In other words, they lie in the range \[-0.5, 0.5] on all axes. 
+For our purposes, **each shape is centered at the origin and has a radius of 0.5. In other words, they lie in the range \[-0.5, 0.5] on all axes.** 
 
-You'll notice on the left side of the UI, there are toggles to change the shape and sliders to change parameter 1 and parameter 2. The parameters control the tessellation of each shape. We'll go into detail about what specifically the parameters do later in the handout. 
+You'll notice on the left side of the UI, there are toggles to change the shape and sliders to change parameter 1 and parameter 2. The parameters control the tessellation level of each shape. We'll go into detail about what specifically the parameters do later in the handout. 
 
 Most importantly, notice that each shape inherits `std::vector<float> m_vertexData` from `OpenGLShape`. You'll be editing this list with the positions and normals for each shape. **Note that `m_vertexData` alternates between vertex positions and normals!**
 
@@ -117,7 +119,7 @@ Now, that you have your tile, you can create one face of the Cube! Notice how pa
 |**_Task 3:_**|
 |:---|
 |In the `Cube` class, fill out the `makeFace()` function stub.|
-|Comment out the `makeTile()` function call in `setVertexData()` and uncomment the `makeFace()` function call. This will render the positive z face of the Cube. <ul><li>The face should tessellate differently depending on parameter 1.</li><li>Use the `makeTile()` function you wrote in the previous task in order to create a face of the cube.</li></ul>|
+|Comment out the `makeTile()` function call in `setVertexData()` and uncomment the `makeFace()` function call. This will render the positive z face of the Cube. <ul><li>The face should tessellate differently depending on parameter 1.</li><li>Use the `makeTile()` function you wrote in the previous task in `makeFace()`.</li></ul>|
 
 Your face should look like this:
 
@@ -138,7 +140,7 @@ Yay! Congratulations on making your Cube! It's time to make a Sphere.
 ![sphere parameter gif][url]
 ![exploding wedges gif][url]
 
-We can think of the Sphere like an orange. Oranges are made up of wedge and each wedge is made up segments. We can build an orange (aka a sphere) by procedurally generating a collection of orange wedges. 
+We can think of the Sphere like an orange. Oranges are made up of wedges and each wedge is made up segments. We can build an orange (aka a sphere) by procedurally generating a collection of orange wedges. 
 
 As shown above, the shape parameters for Sphere are slightly different than Cube. The first parameter controls the number of 'segments' (like latitude), and the second parameter controls the number of 'wedges' (like longitude). 
 
@@ -163,7 +165,7 @@ Remember polar coordinates (*r*, 𝜃) from high school geometry? Spherical coor
 |**_Task 5:_**|
 |:---|
 |Implement the `makeTile()` function stub in the `Sphere` Class.|
-|<ul><li>This function should look very similar to the `makeTile()` function in the `Cube` class.</li><li>Note that the normals are calculated differently from those in Cube. The normals for Sphere are per vertex normals. Refer to the diagram for what your normals should look like.</li></ul> ![sphere normals diagram][url]|
+|<ul><li>This function should look very similar to the `makeTile()` function in the `Cube` class.</li><li>Note that the normals are calculated differently from those in Cube. The normals for Sphere are per-vertex normals. Refer to the diagram for what your normals should look like.</li></ul> ![sphere normals diagram][url]|
 
 |**_Task 6:_**|
 |:---|
@@ -179,6 +181,10 @@ Your wedge should look like this:
 |:---|
 |Implement the `makeOrange()` function stub in the `Sphere` Class.|
 |Comment out the `makeWedge()` function call in `setVertexData()` and uncomment the `makeOrange()` function call. <ul><li>Remember that everything is in radians!</li><li>Remember that we are making multiple wedges (aka a Sphere), so you need to pay attention to parameter 2 and 𝜃.</li></ul>|
+
+Your sphere should look like this:
+
+![sphere gif][url]
 
 ## 4. End
 Now you're ready to show your work to a TA and get checked off! Congrats on finishing the Trimeshez lab. 
