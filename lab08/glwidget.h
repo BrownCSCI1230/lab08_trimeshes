@@ -12,6 +12,12 @@
 #include <QMouseEvent>
 #include <QWheelEvent>
 
+#include "shapes/Triangle.h"
+#include "shapes/Cube.h"
+#include "shapes/Sphere.h"
+#include "shapes/Cylinder.h"
+#include "shapes/Cone.h"
+
 QT_FORWARD_DECLARE_CLASS(QOpenGLShaderProgram)
 
 class GLWidget : public QOpenGLWidget, protected QOpenGLFunctions
@@ -76,7 +82,11 @@ private:
 
     // Tracking shape to render
     int m_currShape;
-    std::unique_ptr<OpenGLShape> m_shape;
+    std::unique_ptr<Triangle> m_triangle;
+    std::unique_ptr<Cube> m_cube;
+    std::unique_ptr<Sphere> m_sphere;
+    std::unique_ptr<Cylinder> m_cylinder;
+    std::unique_ptr<Cone> m_cone;
 
     // Tracking params
     int m_currParam1;

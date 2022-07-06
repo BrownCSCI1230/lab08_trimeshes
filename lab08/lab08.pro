@@ -13,7 +13,6 @@ HEADERS += \
     shapes/Cone.h \
     shapes/Cube.h \
     shapes/Cylinder.h \
-    shapes/OpenGLShape.h \
     shapes/Sphere.h \
     shapes/Triangle.h
 
@@ -25,7 +24,6 @@ SOURCES += \
     shapes/Cone.cpp \
     shapes/Cube.cpp \
     shapes/Cylinder.cpp \
-    shapes/OpenGLShape.cpp \
     shapes/Sphere.cpp \
     shapes/Triangle.cpp
 

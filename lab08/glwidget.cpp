@@ -1,10 +1,5 @@
 #include "glwidget.h"
 #include "Settings.h"
-#include "shapes/Triangle.h"
-#include "shapes/Cube.h"
-#include "shapes/Sphere.h"
-#include "shapes/Cylinder.h"
-#include "shapes/Cone.h"
 
 #include <QOpenGLShaderProgram>
 #include <QCoreApplication>
@@ -15,7 +10,11 @@
 GLWidget::GLWidget(QWidget *parent)
     : QOpenGLWidget(parent),
       m_currShape(SHAPE_TRIANGLE),
-      m_shape(std::unique_ptr<Triangle>(new Triangle)),
+      m_triangle(std::unique_ptr<Triangle>(new Triangle)),
+      m_cube(std::unique_ptr<Cube>(new Cube(settings.shapeParameter1))),
+      m_sphere(std::unique_ptr<Sphere>(new Sphere(settings.shapeParameter1, settings.shapeParameter2))),
+      m_cylinder(std::unique_ptr<Cylinder>(new Cylinder(settings.shapeParameter1, settings.shapeParameter2))),
+      m_cone(std::unique_ptr<Cone>(new Cone(settings.shapeParameter1, settings.shapeParameter2))),
       m_currParam1(1),
       m_currParam2(1)
 {
@@ -256,7 +255,18 @@ void GLWidget::initializeGL()
 void GLWidget::bindVbo()
 {
     // Create the OpenGLShape and get its vertices and normals
-    verts = m_shape->generateShape();
+    if (m_currShape == SHAPE_TRIANGLE) {
+        verts = m_triangle->generateShape();
+    } else if (m_currShape == SHAPE_CUBE) {
+        verts = m_cube->generateShape();
+    } else if (m_currShape == SHAPE_SPHERE) {
+        verts = m_sphere->generateShape();
+    } else if (m_currShape == SHAPE_CYLINDER) {
+        verts = m_cylinder->generateShape();
+    } else if (m_currShape == SHAPE_CONE) {
+        verts = m_cone->generateShape();
+    }
+
     m_numTriangles = int(verts.size()) / 6;
 
     m_vbo.bind();
@@ -392,19 +402,14 @@ void GLWidget::settingsChange()
     // if shape settings change
     if (settings.shapeType != m_currShape) {
         if (settings.shapeType == SHAPE_TRIANGLE) {
-            m_shape = std::make_unique<Triangle>();
             m_currShape = SHAPE_TRIANGLE;
         } else if (settings.shapeType == SHAPE_CUBE) {
-            m_shape = std::make_unique<Cube>(settings.shapeParameter1);
             m_currShape = SHAPE_CUBE;
         } else if (settings.shapeType == SHAPE_SPHERE) {
-            m_shape = std::make_unique<Sphere>(settings.shapeParameter1, settings.shapeParameter2);
             m_currShape = SHAPE_SPHERE;
         } else if (settings.shapeType == SHAPE_CYLINDER) {
-            m_shape = std::make_unique<Cylinder>(settings.shapeParameter1, settings.shapeParameter2);
             m_currShape = SHAPE_CYLINDER;
         } else if (settings.shapeType == SHAPE_CONE) {
-            m_shape = std::make_unique<Cone>(settings.shapeParameter1, settings.shapeParameter2);
             m_currShape = SHAPE_CONE;
         }
     }
@@ -413,7 +418,18 @@ void GLWidget::settingsChange()
     if (settings.shapeParameter1 != m_currParam1 || settings.shapeParameter2 != m_currParam2) {
         m_currParam1 = settings.shapeParameter1;
         m_currParam2 = settings.shapeParameter2;
-        m_shape->updateParams(settings.shapeParameter1, settings.shapeParameter2);
+
+        if (settings.shapeType == SHAPE_TRIANGLE) {
+            m_triangle->updateParams(settings.shapeParameter1, settings.shapeParameter2);
+        } else if (settings.shapeType == SHAPE_CUBE) {
+            m_cube->updateParams(settings.shapeParameter1, settings.shapeParameter2);
+        } else if (settings.shapeType == SHAPE_SPHERE) {
+            m_sphere->updateParams(settings.shapeParameter1, settings.shapeParameter2);
+        } else if (settings.shapeType == SHAPE_CYLINDER) {
+            m_cylinder->updateParams(settings.shapeParameter1, settings.shapeParameter2);
+        } else if (settings.shapeType == SHAPE_CONE) {
+            m_cone->updateParams(settings.shapeParameter1, settings.shapeParameter2);
+        }
     }
 
     bindVbo();
